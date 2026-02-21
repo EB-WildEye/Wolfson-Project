@@ -48,10 +48,13 @@ def chat(req: ChatRequest):
     context = "\n\n---\n\n".join(r["text"] for r in results)
     sources = list(set(r.get("source", "unknown") for r in results))
 
-    # 3. Ask Gemini
-    answer = ask_gemini(req.query, context)
+    # 3. Get conversation history for context
+    chat_history = get_history(req.session_id, limit=10)
 
-    # 4. Save to MongoDB
+    # 4. Ask Gemini (with history for name memory & continuity)
+    answer = ask_gemini(req.query, context, history=chat_history)
+
+    # 5. Save to MongoDB
     save_message(req.session_id, "user", req.query)
     save_message(req.session_id, "assistant", answer)
 
