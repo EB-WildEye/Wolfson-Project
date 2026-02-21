@@ -1,0 +1,22 @@
+[project]
+name = "gali"
+version = "0.1.0"
+description = "Gali – RAG assistant for the gynecology department"
+requires-python = ">=3.12"
+dependencies = [
+    "google-genai>=1.0",       # Gemini LLM + embeddings
+    "lancedb>=0.20",           # Vector store (local, serverless)
+    "pymongo>=4.0",            # MongoDB for chat history
+    "fastapi>=0.115",          # Backend API
+    "uvicorn>=0.34",           # ASGI server
+    "streamlit>=1.40",         # Chat UI
+    "pypdf>=5.0",              # PDF reader
+    "python-dotenv>=1.0",      # .env loading
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["ingestion", "agent", "ui"]
