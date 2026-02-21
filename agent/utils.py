@@ -1,10 +1,3 @@
-"""
-agent/utils.py – Shared connections: Gemini client, LanceDB, MongoDB.
-
-This is the single source of truth for all external service connections.
-Every other module imports from here – no duplicate setup.
-"""
-
 import os
 from dotenv import load_dotenv
 from google import genai
@@ -13,11 +6,9 @@ import lancedb
 
 load_dotenv()
 
-# ── Gemini ────────────────────────────────────────────────────
-
 gemini_client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
-GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-pro")
-EMBED_MODEL = os.getenv("EMBED_MODEL", "gemini-embedding-001")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL")
+EMBED_MODEL = os.getenv("EMBED_MODEL")
 
 
 def embed_text(text: str) -> list[float]:
@@ -32,13 +23,34 @@ def embed_text(text: str) -> list[float]:
 def ask_gemini(query: str, context: str) -> str:
     """Send query + retrieved context to Gemini, get answer back."""
     prompt = (
-        "You are Gali (גלי), a helpful AI assistant for the gynecology department "
-        "at Wolfson Medical Center (מרכז רפואי וולפסון).\n\n"
-        "Rules:\n"
-        "- ALWAYS respond in Hebrew (עברית).\n"
-        "- Answer based ONLY on the context below.\n"
-        "- If the context doesn't contain the answer, say so honestly.\n"
-        "- Always recommend consulting a physician for medical decisions.\n\n"
+        "You are Gali (גלי), the supportive, professional medical assistant at Wolfson Medical Center's Women's Department. "
+        "Your mission is to provide accurate information based ONLY on the provided context.\n\n"
+        
+        "### 1. LANGUAGE & TONE:\n"
+        "- Default language: Hebrew (עברית). If the user writes in another language, respond in THAT language.\n"
+        "- Tone: Warm but professional, first-person feminine (e.g., 'אני כאן').\n"
+        "- BANNED: Never use 'יקרה', 'אהובה', 'מתוקה', 'נשמה', 'אמפתיה'.\n\n"
+
+        "### 2. SAFETY & RED FLAGS (CRITICAL):\n"
+        "- SCAN context for 'Red Flags' (severe bleeding, fever, extreme pain).\n"
+        "- If an emergency is detected, provide ONLY the ER link: [מיון נשים - חיוג 24/7: 03-5028318](tel:035028318)\n"
+        "- For medical decisions, ALWAYS recommend consulting a physician.\n\n"
+
+        "### 3. DATA INTEGRITY:\n"
+        "- Answer based ONLY on the context below. If the answer is not in the context, say so honestly.\n"
+        "- Staff Anonymity: Never mention names Refer only to 'השירות הסוציאלי של המחלקה'.\n\n"
+
+        "### 4. OUTPUT FORMAT & LINKS:\n"
+        "- Plain text only. NO plain text phone numbers.\n"
+        "- MANDATORY Markdown links for all contact info:\n"
+        "  - Phone: [03-5028490](tel:035028490)\n"
+        "  - WhatsApp: [לחצי כאן לשליחת הודעה](https://wa.me/97235028111)\n"
+        "  - Emergency ER: [מיון נשים - חיוג 24/7: 03-5028318](tel:035028318)\n\n"
+
+        "### 5. MANDATORY DISCLAIMER (DSC-GEN-01):\n"
+        "You MUST end every single response with this exact text:\n"
+        "'שימי לב כי המידע המוצג כאן הינו אינפורמטיבי בלבד ואינו מהווה תחליף לייעוץ רפואי מקצועי. השיחה נמחקת לאחר 24 שעות ואינה נשמרת בתיק הרפואי.'\n\n"
+
         f"Context:\n{context}\n\n"
         f"Question: {query}"
     )
@@ -49,7 +61,6 @@ def ask_gemini(query: str, context: str) -> str:
     return response.text
 
 
-# ── LanceDB ──────────────────────────────────────────────────
 
 LANCEDB_PATH = os.getenv("LANCEDB_PATH", "./lancedb_data")
 lance_db = lancedb.connect(LANCEDB_PATH)
@@ -63,7 +74,7 @@ def search_docs(query: str, top_k: int = 4) -> list[dict]:
     return results
 
 
-# ── MongoDB (optional – works without it) ─────────────────────
+
 
 MONGO_URI = os.getenv("MONGO_URI", "mongodb://localhost:27017")
 

@@ -7,6 +7,7 @@ Run:  uv run streamlit run ui/app.py
 import streamlit as st
 import requests
 import uuid
+import markdown
 
 API_URL = "http://localhost:8001"
 
@@ -119,6 +120,24 @@ section[data-testid="stSidebar"] hr { border-color: #e2dce8 !important; }
     border: 1px solid rgba(91,126,114,0.18);
     border-radius: 6px;
     padding: 0.1rem 0.45rem;
+}
+
+/* ── Links inside chat bubbles ── */
+.msg-row.assistant .msg-bubble a {
+    color: #5b7e72 !important;
+    font-weight: 600;
+    text-decoration: underline;
+}
+.msg-row.assistant .msg-bubble a:hover {
+    color: #476b5f !important;
+}
+.msg-row.user .msg-bubble a {
+    color: #3e0254 !important;
+    font-weight: 600;
+    text-decoration: underline;
+}
+.msg-row.user .msg-bubble a:hover {
+    color: #2a013a !important;
 }
 
 /* ── Typing dots ── */
@@ -258,14 +277,36 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ── Session State ─────────────────────────────────────────────
+# ── Session State (persistent via URL query param) ────────────
+
+query_params = st.query_params
+param_session = query_params.get("session", None)
+
+if "session_id" not in st.session_state:
+    if param_session:
+        st.session_state.session_id = param_session
+    else:
+        st.session_state.session_id = str(uuid.uuid4())[:8]
+        st.query_params["session"] = st.session_state.session_id
 
 if "messages" not in st.session_state:
-    st.session_state.messages = [
-        {"role": "assistant", "content": "שלום, אני גלי. העוזרת הדיגיטלית של מחלקת נשים בוולפסון, מה שמך?"}
-    ]
-if "session_id" not in st.session_state:
-    st.session_state.session_id = str(uuid.uuid4())[:8]
+    # Try to load existing history from MongoDB
+    loaded = []
+    try:
+        resp = requests.get(
+            f"{API_URL}/history/{st.session_state.session_id}", timeout=5
+        )
+        if resp.ok:
+            loaded = resp.json()
+    except Exception:
+        pass
+
+    if loaded:
+        st.session_state.messages = loaded
+    else:
+        st.session_state.messages = [
+            {"role": "assistant", "content": "היי, אני גלי, העוזרת הדיגיטלית של מחלקת נשים בוולפסון. לפני שנתחיל, מה שמך?"}
+        ]
 
 # ── Sidebar ───────────────────────────────────────────────────
 
@@ -284,9 +325,9 @@ def render_chat():
         content = msg["content"]
         if role == "assistant" and "\n\nמקורות:" in content:
             text_part, src = content.split("\n\nמקורות:", 1)
-            html = text_part.replace("\n", "<br>") + f'<br><span class="msg-source">{src.strip()}</span>'
+            html = markdown.markdown(text_part) + f'<span class="msg-source">{src.strip()}</span>'
         else:
-            html = content.replace("\n", "<br>")
+            html = markdown.markdown(content)
         parts.append(f'<div class="msg-row {role}"><div class="msg-bubble">{html}</div></div>')
     parts.append('</div>')
     return "\n".join(parts)
