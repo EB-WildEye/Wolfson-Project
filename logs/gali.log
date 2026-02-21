@@ -1,0 +1,133 @@
+2026-02-21 19:06:48 | INFO     | agent.server | Starting Gali API server...
+2026-02-21 19:06:49 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-02-21 19:06:49 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-02-21 19:06:49 | INFO     | agent.history | MongoDB connected
+2026-02-21 19:06:49 | INFO     | agent.server | All services initialized
+2026-02-21 19:07:26 | INFO     | agent.server | Shutting down Gali API server
+2026-02-21 19:07:45 | INFO     | agent.server | Starting Gali API server...
+2026-02-21 19:07:46 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-02-21 19:07:46 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-02-21 19:07:46 | INFO     | agent.history | MongoDB connected
+2026-02-21 19:07:46 | INFO     | agent.server | All services initialized
+2026-02-21 19:10:09 | INFO     | agent.server | [14238d04] GET /api/v1/history/886ff31c → 200 (0.018s)
+2026-02-21 19:10:29 | DEBUG    | agent.vectorstore | Search returned 4 results | query: טליה
+2026-02-21 19:11:14 | INFO     | agent.llm | Generated 165 chars | query: טליה
+2026-02-21 19:11:14 | INFO     | agent.server | [b13a2cab] POST /api/v1/chat → 200 (48.396s)
+2026-02-21 19:12:31 | DEBUG    | agent.vectorstore | Search returned 4 results | query: מה זה הפלה נדחית ומה ההבדל בין הפלה רגיל
+2026-02-21 19:12:49 | INFO     | agent.llm | Generated 745 chars | query: מה זה הפלה נדחית ומה ההבדל בין הפלה רגילה ?
+2026-02-21 19:12:49 | INFO     | agent.server | [9dcaf669] POST /api/v1/chat → 200 (18.652s)
+2026-02-21 19:18:49 | INFO     | agent.server | Shutting down Gali API server
+2026-02-21 19:19:09 | INFO     | agent.server | Starting Gali API server...
+2026-02-21 19:19:09 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-02-21 19:19:09 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-02-21 19:19:09 | INFO     | agent.history | MongoDB connected
+2026-02-21 19:19:09 | INFO     | agent.server | All services initialized
+2026-02-21 19:19:54 | INFO     | agent.server | Shutting down Gali API server
+2026-02-21 19:20:15 | INFO     | agent.server | Starting Gali API server...
+2026-02-21 19:20:16 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-02-21 19:20:16 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-02-21 19:20:16 | INFO     | agent.history | MongoDB connected
+2026-02-21 19:20:16 | INFO     | agent.server | All services initialized
+2026-02-21 19:20:17 | DEBUG    | agent.vectorstore | Search returned 4 results | query: אני יכולה לבחור שרק נשים יטפלו בי בוולפס
+2026-02-21 19:20:31 | INFO     | agent.llm | Generated 420 chars | query: אני יכולה לבחור שרק נשים יטפלו בי בוולפסון ? 
+2026-02-21 19:20:31 | INFO     | agent.history | PII scrubbed: [ת.ז. הוסר]
+2026-02-21 19:20:31 | INFO     | agent.history | PII scrubbed: [טלפון הוסר]
+2026-02-21 19:20:31 | INFO     | agent.server | [4a0ec4b9] POST /api/v1/chat → 200 (14.817s)
+2026-02-21 19:20:57 | INFO     | agent.server | Shutting down Gali API server
+2026-02-21 19:21:19 | INFO     | agent.server | Starting Gali API server...
+2026-02-21 19:21:19 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-02-21 19:21:19 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-02-21 19:21:20 | INFO     | agent.history | MongoDB connected
+2026-02-21 19:21:20 | INFO     | agent.server | All services initialized
+2026-02-21 19:21:20 | INFO     | agent.server | [69857757] GET /api/v1/history/886ff31c → 200 (0.008s)
+2026-02-21 19:21:25 | INFO     | agent.server | [f8f85e46] GET /api/v1/history/af40edda → 200 (0.004s)
+2026-02-21 19:21:45 | DEBUG    | agent.vectorstore | Search returned 4 results | query: אירנה
+2026-02-21 19:21:53 | INFO     | agent.llm | Generated 166 chars | query: אירנה
+2026-02-21 19:21:53 | INFO     | agent.server | [8b3e1816] POST /api/v1/chat → 200 (9.59s)
+2026-02-21 19:22:09 | INFO     | agent.server | Shutting down Gali API server
+2026-02-21 19:24:04 | INFO     | agent.server | Starting Gali API server...
+2026-02-21 19:24:05 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-02-21 19:24:05 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-02-21 19:24:05 | INFO     | agent.history | MongoDB connected
+2026-02-21 19:24:05 | INFO     | agent.server | All services initialized
+2026-02-21 19:24:56 | INFO     | agent.server | [6d0d763f] GET /api/v1/history/444db6cd → 200 (0.01s)
+2026-02-21 19:24:58 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-02-21 19:24:58 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-02-21 19:24:58 | WARNING  | agent.vectorstore | Dropped table 'documents'
+2026-02-21 19:24:58 | INFO     | __main__ | Existing rows: 0
+2026-02-21 19:24:59 | INFO     | __main__ | Processing: missed abortion.pdf
+2026-02-21 19:25:11 | INFO     | __main__ |   → 166 chunks from 99108 chars
+2026-02-21 19:25:11 | INFO     | __main__ | Embedding 166 chunks...
+2026-02-21 19:25:14 | INFO     | __main__ |   Embedded 10/166
+2026-02-21 19:25:17 | INFO     | __main__ |   Embedded 20/166
+2026-02-21 19:25:20 | INFO     | __main__ |   Embedded 30/166
+2026-02-21 19:25:23 | INFO     | __main__ |   Embedded 40/166
+2026-02-21 19:25:26 | INFO     | __main__ |   Embedded 50/166
+2026-02-21 19:25:29 | INFO     | __main__ |   Embedded 60/166
+2026-02-21 19:25:32 | INFO     | __main__ |   Embedded 70/166
+2026-02-21 19:25:35 | INFO     | __main__ |   Embedded 80/166
+2026-02-21 19:25:38 | INFO     | __main__ |   Embedded 90/166
+2026-02-21 19:25:41 | INFO     | __main__ |   Embedded 100/166
+2026-02-21 19:25:44 | INFO     | __main__ |   Embedded 110/166
+2026-02-21 19:25:47 | INFO     | __main__ |   Embedded 120/166
+2026-02-21 19:25:50 | INFO     | __main__ |   Embedded 130/166
+2026-02-21 19:25:53 | INFO     | __main__ |   Embedded 140/166
+2026-02-21 19:25:56 | INFO     | __main__ |   Embedded 150/166
+2026-02-21 19:25:57 | INFO     | agent.server | [3ae23346] POST /api/v1/chat/stream → 500 (0.009s)
+2026-02-21 19:25:59 | INFO     | __main__ |   Embedded 160/166
+2026-02-21 19:26:01 | INFO     | agent.vectorstore | Stored 166 chunks in 'documents'
+2026-02-21 19:26:01 | INFO     | __main__ | Done | 166 chunks stored | 0 skipped | 62.8s
+2026-02-21 19:26:09 | INFO     | agent.server | [a9002fcf] GET /api/v1/history/444db6cd → 200 (0.004s)
+2026-02-21 19:26:18 | INFO     | agent.server | [3df33961] GET /api/v1/history/592c0b27 → 200 (0.005s)
+2026-02-21 19:26:39 | DEBUG    | agent.vectorstore | Search returned 4 results | query: נועם
+2026-02-21 19:26:39 | INFO     | agent.server | [d2f8cdc2] POST /api/v1/chat/stream → 200 (0.651s)
+2026-02-21 19:27:19 | DEBUG    | agent.vectorstore | Search returned 4 results | query: תוכלי להסביר לי על הפלה נדחית? 
+2026-02-21 19:27:19 | INFO     | agent.server | [66fdf363] POST /api/v1/chat/stream → 200 (0.435s)
+2026-02-21 19:28:07 | DEBUG    | agent.vectorstore | Search returned 4 results | query: איזה פגמים גנטיים יכולים להביא לכך? ואפש
+2026-02-21 19:28:07 | INFO     | agent.server | [98e70218] POST /api/v1/chat/stream → 200 (0.417s)
+2026-02-21 19:28:24 | INFO     | agent.history | PII scrubbed: [ת.ז. הוסר]
+2026-02-21 19:28:24 | INFO     | agent.history | PII scrubbed: [טלפון הוסר]
+2026-02-21 19:34:46 | INFO     | agent.server | Shutting down Gali API server
+2026-02-21 19:35:15 | INFO     | agent.server | Starting Gali API server...
+2026-02-21 19:35:16 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-02-21 19:35:16 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-02-21 19:35:16 | INFO     | agent.history | MongoDB connected
+2026-02-21 19:35:16 | INFO     | agent.server | All services initialized
+2026-02-21 19:41:56 | INFO     | agent.server | [b5592892] GET /api/v1/history/578ad7bc → 200 (0.012s)
+2026-02-21 19:42:13 | DEBUG    | agent.vectorstore | Search returned 4 results | query: רויטל
+2026-02-21 19:42:13 | INFO     | agent.server | [70ce7644] POST /api/v1/chat/stream → 200 (0.674s)
+2026-02-21 19:42:46 | DEBUG    | agent.vectorstore | Search returned 4 results | query: מה זה הפלה נדחית?ואיך אפשר לבדוק את זה 
+2026-02-21 19:42:46 | INFO     | agent.server | [ccb1c4bf] POST /api/v1/chat/stream → 200 (0.441s)
+2026-02-21 19:45:20 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-02-21 19:46:20 | INFO     | agent.server | Shutting down Gali API server
+2026-02-21 19:46:39 | INFO     | agent.server | Starting Gali API server...
+2026-02-21 19:46:40 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-02-21 19:46:40 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-02-21 19:46:40 | INFO     | agent.history | MongoDB connected
+2026-02-21 19:46:40 | INFO     | agent.server | All services initialized
+2026-02-21 19:47:29 | INFO     | agent.server | [62b7fafc] GET /api/v1/history/9b558abe → 200 (0.012s)
+2026-02-21 19:47:51 | DEBUG    | agent.vectorstore | Search returned 4 results | query: איילה
+2026-02-21 19:47:51 | INFO     | agent.server | [d17b81ed] POST /api/v1/chat/stream → 200 (0.661s)
+2026-02-21 19:48:15 | DEBUG    | agent.vectorstore | Search returned 4 results | query: מה זה הפלה נדחית? ואיך אפשר לבדוק את זה?
+2026-02-21 19:48:15 | INFO     | agent.server | [a930b4fb] POST /api/v1/chat/stream → 200 (0.438s)
+2026-02-21 19:50:27 | INFO     | agent.server | Shutting down Gali API server
+2026-02-21 19:50:45 | INFO     | agent.server | Starting Gali API server...
+2026-02-21 19:50:46 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-02-21 19:50:46 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-02-21 19:50:46 | INFO     | agent.history | MongoDB connected
+2026-02-21 19:50:46 | INFO     | agent.server | All services initialized
+2026-02-21 19:51:48 | INFO     | agent.server | [cceb281e] GET /api/v1/history/9b558abe → 200 (0.007s)
+2026-02-21 19:52:26 | DEBUG    | agent.vectorstore | Search returned 4 results | query: מה זה שק הריון? מה זה קוטב עוברי?
+2026-02-21 19:52:26 | INFO     | agent.server | [460144fd] POST /api/v1/chat/stream → 200 (0.675s)
+2026-02-21 19:53:45 | INFO     | agent.server | Shutting down Gali API server
+2026-02-21 19:54:05 | INFO     | agent.server | Starting Gali API server...
+2026-02-21 19:54:06 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-02-21 19:54:06 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-02-21 19:54:06 | INFO     | agent.history | MongoDB connected
+2026-02-21 19:54:06 | INFO     | agent.server | All services initialized
+2026-02-21 19:55:33 | INFO     | agent.server | Shutting down Gali API server
+2026-02-21 19:55:52 | INFO     | agent.server | Starting Gali API server...
+2026-02-21 19:55:53 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-02-21 19:55:53 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-02-21 19:55:53 | INFO     | agent.history | MongoDB connected
+2026-02-21 19:55:53 | INFO     | agent.server | All services initialized

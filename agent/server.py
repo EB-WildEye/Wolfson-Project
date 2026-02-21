@@ -1,0 +1,146 @@
+"""Gali REST API server — production-ready FastAPI entry point."""
+
+import time
+import uuid
+from contextlib import asynccontextmanager
+from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel, Field
+from agent.config import settings
+from agent.logger import get_logger
+from agent.llm import GeminiClient
+from agent.vectorstore import VectorStore
+from agent.history import ChatHistory
+
+log = get_logger(__name__)
+
+API_PREFIX = "/api/v1"
+
+llm: GeminiClient = None
+store: VectorStore = None
+history: ChatHistory = None
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    """Initialize services on startup, cleanup on shutdown."""
+    global llm, store, history
+    log.info("Starting Gali API server...")
+    llm = GeminiClient()
+    store = VectorStore(llm)
+    history = ChatHistory(llm=llm)
+    log.info("All services initialized")
+    yield
+    log.info("Shutting down Gali API server")
+
+
+app = FastAPI(
+    title="Gali API",
+    version="1.0.0",
+    description="RAG assistant for Wolfson Medical Center — Women's Department",
+    lifespan=lifespan,
+)
+
+
+# ── Middleware ────────────────────────────────────────────────
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+@app.middleware("http")
+async def request_middleware(request: Request, call_next):
+    """Add request ID, log timing, catch unhandled errors."""
+    request_id = str(uuid.uuid4())[:8]
+    request.state.request_id = request_id
+    start = time.time()
+
+    try:
+        response = await call_next(request)
+        duration = round(time.time() - start, 3)
+        log.info(f"[{request_id}] {request.method} {request.url.path} → {response.status_code} ({duration}s)")
+        response.headers["X-Request-ID"] = request_id
+        return response
+    except Exception as e:
+        log.error(f"[{request_id}] Unhandled error: {e}")
+        return JSONResponse(status_code=500, content={"error": "Internal server error", "request_id": request_id})
+
+
+# ── Global Exception Handlers ────────────────────────────────
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException):
+    """Return clean JSON for HTTP errors."""
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"error": exc.detail, "status": exc.status_code},
+    )
+
+
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    """Catch-all for unhandled exceptions."""
+    log.error(f"Unhandled exception: {type(exc).__name__}: {exc}")
+    return JSONResponse(
+        status_code=500,
+        content={"error": "Internal server error", "detail": str(exc) if settings.ENV == "dev" else None},
+    )
+
+
+# ── Schemas ───────────────────────────────────────────────────
+
+class ChatRequest(BaseModel):
+    query: str = Field(..., min_length=1, max_length=2000)
+    session_id: str = Field(default="default", max_length=50)
+
+
+class ChatResponse(BaseModel):
+    answer: str
+    sources: list[str] = []
+    session_id: str = ""
+
+
+# ── Routes ────────────────────────────────────────────────────
+
+@app.post(f"{API_PREFIX}/chat", response_model=ChatResponse)
+def chat(req: ChatRequest):
+    """RAG endpoint: search → generate → save."""
+    try:
+        results = store.search(req.query)
+    except Exception:
+        raise HTTPException(500, "No documents ingested. Run: uv run python -m ingestion.main")
+
+    context = "\n\n---\n\n".join(r["text"] for r in results)
+    sources = list({r.get("source", "unknown") for r in results})
+    hist = history.get_condensed(req.session_id)
+
+    answer = llm.ask(req.query, context, history_text=hist)
+
+    history.save(req.session_id, "user", req.query)
+    history.save(req.session_id, "assistant", answer)
+    return ChatResponse(answer=answer, sources=sources, session_id=req.session_id)
+
+
+
+
+@app.get(f"{API_PREFIX}/history/{{session_id}}")
+def get_history(session_id: str):
+    """Return chat history for a session."""
+    return history.get(session_id)
+
+
+@app.get(f"{API_PREFIX}/health")
+def health():
+    """Health check with service status."""
+    return {
+        "status": "ok",
+        "version": app.version,
+        "model": settings.GEMINI_MODEL,
+        "env": settings.ENV,
+    }

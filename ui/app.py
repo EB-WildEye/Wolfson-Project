@@ -9,7 +9,7 @@ import requests
 import uuid
 import markdown
 
-API_URL = "http://localhost:8001"
+API_URL = "http://localhost:8001/api/v1"
 
 st.set_page_config(page_title="גלי – עוזרת AI גינקולוגיה", layout="wide")
 
