@@ -1,11 +1,5 @@
 # 🩺 Gali – Gynecology AI Assistant
 
-A **stupid simple** RAG (Retrieval-Augmented Generation) system that lets you chat with an AI assistant grounded in your department's PDFs and CSVs.
-
-Built for the Gynecology Department at **Wolfson Medical Center**.
-
----
-
 ## Architecture
 
 ```
@@ -71,21 +65,8 @@ Open http://localhost:8501 in your browser.
 
 ---
 
-## Tech Stack
-
-| Component       | Technology           |
-| --------------- | -------------------- |
-| Language        | Python 3.12          |
-| Package Manager | uv                   |
-| LLM Framework   | LangChain            |
-| LLM             | GPT-4o-mini (OpenAI) |
-| Vector Store    | ChromaDB (local)     |
-| Document Loaders| PyPDF, CSVLoader     |
-| UI              | Streamlit            |
-
----
-
 ## ⚠️ Disclaimer
 
 Gali is an AI assistant and does **NOT** replace professional medical advice.
 Always consult a physician for medical decisions.
+
