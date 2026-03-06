@@ -1,41 +1,48 @@
-# 🩺 Gali – Gynecology AI Assistant
+# 🩺 Gali — Gynecology AI Assistant
 
-A **stupid simple** RAG (Retrieval-Augmented Generation) system that lets you chat with an AI assistant grounded in your department's PDFs and CSVs.
+> RAG-powered medical assistant for the Women's Health Department at **Wolfson Medical Center**.
 
-Built for the Gynecology Department at **Wolfson Medical Center**.
+Gali ingests department PDFs and CSVs, embeds them into a local vector store, and provides an AI chat interface grounded in real clinical documents — with built-in safety protocols, session history, and prompt-injection protection.
 
 ---
 
-## Architecture
+## Project Structure
 
 ```
 Gali/
-├── .python-version          # Python 3.12 (managed by uv)
-├── pyproject.toml           # Dependencies (managed by uv)
-├── .env                     # API keys & config
+├── pyproject.toml                # Dependencies (managed by uv)
+├── .python-version               # Python 3.12
+├── .env                          # API keys & config (git-ignored)
 │
-├── ingestion/               # Step 1: Ingest documents
-│   ├── main.py              #   Load → Chunk → Embed → Store
-│   └── data/                #   Drop your PDFs/CSVs here
+├── ingestion/                    # Document ingestion pipeline
+│   ├── main.py                   #   CLI: Load → Clean → Chunk → Embed → Store
+│   └── data/                     #   Drop your PDFs / CSVs here
 │
-├── agent/                   # Step 2: RAG logic + API server
-│   ├── server.py            #   FastAPI REST API
-│   ├── llm.py               #   Gemini LLM client
-│   ├── vectorstore.py       #   LanceDB vector store
-│   ├── history.py           #   MongoDB chat history
-│   ├── prompt.py            #   Prompt templates
-│   ├── config.py            #   Settings from .env
-│   └── logger.py            #   Logging setup
+├── agent/                        # Backend — RAG engine + API
+│   ├── server.py                 #   FastAPI REST API (routes, CORS, middleware)
+│   ├── llm.py                    #   Gemini LLM client
+│   ├── vectorstore.py            #   LanceDB vector store
+│   ├── history.py                #   MongoDB chat history + summarization
+│   ├── prompt.py                 #   System prompt & safety protocols
+│   ├── config.py                 #   Centralized settings from .env
+│   └── logger.py                 #   Structured logging
 │
-└── ui/                      # Step 3: Chat interface
-    └── app.py               #   Streamlit chat UI
+├── ui/                           # Frontend — Chat interface
+│   └── app.py                    #   Streamlit chat UI
+│
+├── lancedb_data/                 # Vector DB storage (git-ignored)
+└── logs/                         # Application logs
 ```
+
+---
 
 ## Prerequisites
 
-- **Python 3.12+**
-- **[uv](https://docs.astral.sh/uv/)** — Python package manager
-- **MongoDB 7.0+** — for chat history storage
+| Requirement                                    | Version |
+| ---------------------------------------------- | ------- |
+| [Python](https://www.python.org/)              | 3.12+   |
+| [uv](https://docs.astral.sh/uv/)              | latest  |
+| [MongoDB](https://www.mongodb.com/)            | 7.0+    |
 
 ---
 
@@ -44,17 +51,16 @@ Gali/
 ### 1. Install dependencies
 
 ```bash
-cd Gali/
 uv sync
 ```
 
 ### 2. Configure environment
 
-Edit `.env` and set your Gemini API key:
+Create a `.env` file with the following:
 
-```
-GEMINI_API_KEY=your-gemini-key-here
-GEMINI_MODEL=gemini-2.5-pro
+```env
+GEMINI_API_KEY=your-gemini-api-key
+GEMINI_MODEL=gemini-2.5-flash
 EMBED_MODEL=gemini-embedding-001
 MONGO_URI=mongodb://localhost:27017
 LANCEDB_PATH=./lancedb_data
@@ -62,7 +68,7 @@ LANCEDB_PATH=./lancedb_data
 
 ### 3. Add documents
 
-Drop your PDF and/or CSV files into `ingestion/data/`.
+Place your PDF and/or CSV files into `ingestion/data/`.
 
 ### 4. Ingest documents
 
@@ -70,13 +76,38 @@ Drop your PDF and/or CSV files into `ingestion/data/`.
 uv run python -m ingestion.main
 ```
 
-This will chunk your documents and store embeddings in a local LanceDB at `./lancedb_data/`.
+---
+
+## CLI Reference
+
+### Ingestion
+
+| Command | Description |
+| --- | --- |
+| `uv run python -m ingestion.main` | **Incremental ingest** — processes only new or modified files (uses SHA-256 hash cache) |
+| `uv run python -m ingestion.main --drop` | **Drop & re-ingest** — deletes the vector table, then re-ingests all files |
+| `uv run python -m ingestion.main --purge` | **Full purge** — deletes the vector table AND the file hash cache, then re-ingests everything from scratch |
+| `uv run python -m ingestion.main --drop-only` | **Drop only** — deletes the vector table and exits (no ingestion) |
+
+> **When to use what:**
+> - Added new files? → `uv run python -m ingestion.main` (incremental, skips unchanged files)
+> - Changed existing files? → `uv run python -m ingestion.main` (detects changes via hash)
+> - Want a clean slate? → `uv run python -m ingestion.main --purge`
+
+### Services
+
+| Command | Description |
+| --- | --- |
+| `sudo systemctl start mongod` | Start MongoDB |
+| `mongosh --eval "db.runCommand({ ping: 1 })"` | Verify MongoDB is running |
+| `uv run uvicorn agent.server:app --reload --port 8000` | Start the FastAPI backend |
+| `uv run streamlit run ui/app.py` | Start the Streamlit chat UI |
 
 ---
 
 ## Running the Project
 
-You need **3 terminals** (all from the `Gali/` directory). Start them in this order:
+Start these **3 services in order**, each in its own terminal:
 
 ### Terminal 1 — 🍃 MongoDB
 
@@ -84,7 +115,7 @@ You need **3 terminals** (all from the `Gali/` directory). Start them in this or
 sudo systemctl start mongod
 ```
 
-Verify it's running:
+Verify:
 
 ```bash
 mongosh --eval "db.runCommand({ ping: 1 })"
@@ -96,41 +127,46 @@ mongosh --eval "db.runCommand({ ping: 1 })"
 uv run uvicorn agent.server:app --reload --port 8000
 ```
 
-API will be available at http://localhost:8000 (docs at http://localhost:8000/docs).
-
 ### Terminal 3 — 🖥️ UI (Streamlit)
 
 ```bash
 uv run streamlit run ui/app.py
 ```
 
-Open http://localhost:8501 in your browser.
+Open [http://localhost:8501](http://localhost:8501) in your browser.
+
+---
+
+## Updating the Knowledge Base
+
+When you add, modify, or remove documents:
+
+1. Place new/updated files in `ingestion/data/`
+2. Run the ingestion pipeline:
+
+```bash
+uv run python -m ingestion.main          # incremental (recommended)
+uv run python -m ingestion.main --purge  # full rebuild
+```
+
+3. The backend picks up changes automatically — no restart needed.
 
 ---
 
 ## Tech Stack
 
-| Component        | Technology                    |
-| ---------------- | ----------------------------- |
-| Language         | Python 3.12                   |
-| Package Manager  | uv                            |
-| LLM              | Gemini 2.5 Pro (Google)       |
-| Embeddings       | Gemini Embedding 001          |
-| Vector Store     | LanceDB (local, serverless)   |
-| Chat History     | MongoDB                       |
-| Backend API      | FastAPI + Uvicorn              |
-| UI               | Streamlit                     |
-| Document Loaders | pdfplumber                    |
-
----
-
-## API Endpoints
-
-| Method | Endpoint                        | Description              |
-| ------ | ------------------------------- | ------------------------ |
-| POST   | `/api/v1/chat`                  | Send a chat message      |
-| GET    | `/api/v1/history/{session_id}`  | Get session chat history |
-| GET    | `/api/v1/health`                | Health check             |
+| Component        | Technology                  |
+| ---------------- | --------------------------- |
+| Language         | Python 3.12                 |
+| Package Manager  | uv                          |
+| LLM              | Gemini 2.5 Flash (Google)   |
+| Embeddings       | Gemini Embedding 001        |
+| Vector Store     | LanceDB (local, serverless) |
+| Chat History     | MongoDB                     |
+| Backend          | FastAPI + Uvicorn            |
+| UI               | Streamlit                   |
+| Document Parsing | pdfplumber                  |
+| Config           | pydantic-settings            |
 
 ---
 

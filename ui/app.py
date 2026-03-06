@@ -2,9 +2,10 @@ import streamlit as st
 import requests
 import uuid
 import markdown
+import os
 
 
-api_url = "http://localhost:8000/api/v1"
+api_url = os.getenv("API_URL", "http://localhost:8000/api/v1")
 
 st.set_page_config(page_title="גלי – עוזרת AI גינקולוגיה", layout="wide")
 

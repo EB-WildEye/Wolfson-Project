@@ -38,7 +38,7 @@ async def lifespan(app: FastAPI):
     log.info("Starting Gali API server...")
     llm = GeminiClient()
     store = VectorStore(llm)
-    history = ChatHistory(llm=llm)
+    history = ChatHistory()
     log.info("All services initialized")
     yield
     log.info("Shutting down Gali API server")
@@ -80,7 +80,7 @@ app.add_middleware(
 # ── Middleware ────────────────────────────────────────────────
 
 @app.middleware("http")
-async def request_middleware(request: Request, call_next):
+async def log_and_track_request(request: Request, call_next):
     """Attach request ID, log timing, and add security headers."""
     request_id = str(uuid.uuid4())
     request.state.request_id = request_id
@@ -117,7 +117,8 @@ INJECTION_PATTERN = re.compile(
 )
 
 
-def sanitize_query(text: str) -> str:
+def sanitize_user_input(text: str) -> str:
+    """Clean and validate user input against injection attacks."""
     # 1. Normalize Unicode — collapses lookalike characters
     text = unicodedata.normalize("NFKC", text)
     # 2. Strip zero-width, control, and invisible formatting characters
@@ -144,7 +145,7 @@ class ChatRequest(BaseModel):
     @field_validator("query")
     @classmethod
     def validate_query(cls, v: str) -> str:
-        return sanitize_query(v)
+        return sanitize_user_input(v)
 
 
 class ChatResponse(BaseModel):
@@ -161,36 +162,43 @@ class ServiceStatus(str, Enum):
 # ── Routes ────────────────────────────────────────────────────
 
 @app.post(f"{API_PREFIX}/chat", response_model=ChatResponse)
-async def chat(req: ChatRequest):
+async def handle_chat_message(req: ChatRequest):
     """RAG endpoint: sanitize → search → generate → save."""
 
-    results = store.search(req.query)
+    results = store.search_similar(req.query)
     if not results:
         raise HTTPException(424, "No documents ingested. Run: uv run python -m ingestion.main")
 
     context = "\n\n---\n\n".join(r["text"] for r in results)
     sources = list({r.get("source", "unknown") for r in results})
-    hist = history.get_condensed(req.session_id)
+    chat_history = history.get_chat_history(req.session_id)
 
-    answer = llm.ask(req.query, context, history_text=hist)
+    try:
+        answer = llm.generate_answer(req.query, context, history=chat_history)
+    except Exception as e:
+        err_str = str(e)
+        if any(k in err_str for k in ("503", "429", "UNAVAILABLE", "overloaded", "high demand")):
+            raise HTTPException(503, "השירות עמוס כרגע, נסו שוב בעוד מספר שניות")
+        raise HTTPException(502, "LLM request failed")
+
     if not answer:
         raise HTTPException(502, "LLM returned an empty response")
 
     # Atomic save — both turns or neither
-    history.save_turn(req.session_id, user_msg=req.query, assistant_msg=answer)
+    history.save_conversation_turn(req.session_id, user_msg=req.query, assistant_msg=answer)
 
     log.info(f"session={req.session_id} sources={sources}")
     return ChatResponse(answer=answer, sources=sources, session_id=req.session_id)
 
 
 @app.get(f"{API_PREFIX}/history/{{session_id}}")
-async def get_history(session_id: str):
+async def retrieve_session_history(session_id: str):
     """Return chat history for a session."""
-    return history.get(session_id)
+    return history.get_messages(session_id)
 
 
 @app.get(f"{API_PREFIX}/health")
-async def health():
+async def check_health():
     """
     Deep health check — verifies actual service liveness, not just process uptime.
     Returns 200 (ok) or 503 (degraded) for load balancer / uptime monitors.
@@ -199,7 +207,7 @@ async def health():
 
     # Vector store ping
     try:
-        store.ping()
+        store.check_connection()
         checks["vectorstore"] = "ok"
     except Exception as e:
         checks["vectorstore"] = f"error: {e}"
@@ -209,7 +217,7 @@ async def health():
 
     # History store check
     try:
-        history.ping()
+        history.check_connection()
         checks["history"] = "ok"
     except Exception as e:
         checks["history"] = f"error: {e}"
@@ -235,7 +243,7 @@ async def health():
 # ── Global Exception Handlers ────────────────────────────────
 
 @app.exception_handler(HTTPException)
-async def http_exception_handler(request: Request, exc: HTTPException):
+async def handle_http_error(request: Request, exc: HTTPException):
     return JSONResponse(
         status_code=exc.status_code,
         content={
@@ -247,7 +255,7 @@ async def http_exception_handler(request: Request, exc: HTTPException):
 
 
 @app.exception_handler(Exception)
-async def global_exception_handler(request: Request, exc: Exception):
+async def handle_unexpected_error(request: Request, exc: Exception):
     log.error(f"Unhandled exception: {type(exc).__name__}: {exc}")
     return JSONResponse(
         status_code=500,

@@ -17,16 +17,16 @@ class VectorStore:
         log.info(f"LanceDB connected | path={settings.LANCEDB_PATH}")
 
 
-    def search(self, query: str, top_k: int = 4) -> list[dict]:
+    def search_similar(self, query: str, top_k: int = 4) -> list[dict]:
         """Embed query and return top-k similar chunks."""
         table = self._db.open_table(settings.LANCEDB_TABLE)
-        results = table.search(self._llm.embed(query)).limit(top_k).to_list()
+        results = table.search(self._llm.embed_text(query)).limit(top_k).to_list()
         log.debug(f"Search returned {len(results)} results | query: {query[:40]}")
         return results
 
 
-    def upsert(self, chunks: list[dict]):
-        """Create/overwrite the documents table."""
+    def store_chunks(self, chunks: list[dict]):
+        """Create/overwrite the documents table with new chunks."""
         self._db.create_table(settings.LANCEDB_TABLE, chunks, mode="overwrite")
         log.info(f"Stored {len(chunks)} chunks in '{settings.LANCEDB_TABLE}'")
 
@@ -40,7 +40,7 @@ class VectorStore:
             log.info(f"Table '{settings.LANCEDB_TABLE}' does not exist, nothing to drop")
 
 
-    def count(self) -> int:
+    def count_rows(self) -> int:
         """Return number of rows in the table."""
         try:
             return self._db.open_table(settings.LANCEDB_TABLE).count_rows()
@@ -48,7 +48,6 @@ class VectorStore:
             return 0
 
 
-    def ping(self):
+    def check_connection(self):
         """Lightweight check that LanceDB is reachable and the table exists."""
         self._db.open_table(settings.LANCEDB_TABLE)
-

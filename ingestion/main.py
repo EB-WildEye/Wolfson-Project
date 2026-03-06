@@ -8,7 +8,6 @@ Usage:
 """
 
 import re
-import os
 import sys
 import glob
 import time
@@ -31,8 +30,8 @@ log = get_logger(__name__)
 CACHE_FILE = settings.DATA_DIR / ".ingestion_cache.json"
 
 
-def _parse_args() -> argparse.Namespace:
-    """Parse CLI arguments."""
+def parse_cli_args() -> argparse.Namespace:
+    """Parse CLI arguments for the ingestion pipeline."""
     parser = argparse.ArgumentParser(prog="ingestion", description="Gali — Ingest documents into LanceDB.")
     parser.add_argument("--drop", action="store_true", help="Drop table before ingesting.")
     parser.add_argument("--purge", action="store_true", help="Drop table + clear hash cache, full re-ingest.")
@@ -46,11 +45,11 @@ class Ingestor:
     def __init__(self):
         self._llm = GeminiClient()
         self._store = VectorStore(self._llm)
-        self._cache = self._load_cache()
+        self._cache = self._load_hash_cache()
 
 
-    def run(self, drop=False, purge=False, drop_only=False):
-        """Main ingestion pipeline with CLI flag support."""
+    def ingest(self, drop=False, purge=False, drop_only=False):
+        """Run the full ingestion pipeline with CLI flag support."""
         t_start = time.perf_counter()
 
         if drop or purge or drop_only:
@@ -65,12 +64,12 @@ class Ingestor:
             log.info("--drop-only: Table dropped. Exiting.")
             return
 
-        log.info(f"Existing rows: {self._store.count()}")
+        log.info(f"Existing rows: {self._store.count_rows()}")
         chunks, skipped = [], 0
 
         for path in glob.glob(str(settings.DATA_DIR / "*.pdf")) + glob.glob(str(settings.DATA_DIR / "*.csv")):
-            name = os.path.basename(path)
-            file_hash = self._hash_file(path)
+            name = Path(path).name
+            file_hash = self._compute_file_hash(path)
 
             if file_hash == self._cache.get(name):
                 log.info(f"Skipping (unchanged): {name}")
@@ -78,31 +77,31 @@ class Ingestor:
                 continue
 
             log.info(f"Processing: {name}")
-            text = self._read_pdf(path) if path.endswith(".pdf") else self._read_csv(path)
-            file_chunks = self._chunk(text, name)
+            text = self._extract_pdf_text(path) if path.endswith(".pdf") else self._extract_csv_text(path)
+            file_chunks = self._split_into_chunks(text, name)
             chunks.extend(file_chunks)
             self._cache[name] = file_hash
             log.info(f"  → {len(file_chunks)} chunks from {len(text)} chars")
 
         if not chunks:
             log.info(f"Nothing to ingest ({skipped} files skipped)")
-            self._save_cache()
+            self._save_hash_cache()
             return
 
         log.info(f"Embedding {len(chunks)} chunks...")
         for i, c in enumerate(chunks):
-            c["vector"] = self._llm.embed(c["text"])
+            c["vector"] = self._llm.embed_text(c["text"])
             if (i + 1) % 10 == 0:
                 log.info(f"  Embedded {i+1}/{len(chunks)}")
 
-        self._store.upsert(chunks)
-        self._save_cache()
+        self._store.store_chunks(chunks)
+        self._save_hash_cache()
 
         elapsed = round(time.perf_counter() - t_start, 1)
         log.info(f"Done | {len(chunks)} chunks stored | {skipped} skipped | {elapsed}s")
 
 
-    def _read_pdf(self, path: str) -> str:
+    def _extract_pdf_text(self, path: str) -> str:
         """Extract text from PDF with table detection."""
         parts = []
         with pdfplumber.open(path) as pdf:
@@ -113,17 +112,17 @@ class Ingestor:
                 text = page.extract_text(x_tolerance=3, y_tolerance=3)
                 if text:
                     parts.append(text)
-        return self._clean("\n\n".join(parts))
+        return self._normalize_text("\n\n".join(parts))
 
 
-    def _read_csv(self, path: str) -> str:
-        """Read CSV as cleaned text."""
+    def _extract_csv_text(self, path: str) -> str:
+        """Read CSV file and return cleaned text."""
         with open(path, "r", encoding="utf-8") as f:
-            return self._clean(f.read())
+            return self._normalize_text(f.read())
 
 
-    def _clean(self, text: str) -> str:
-        """Normalize whitespace and remove junk."""
+    def _normalize_text(self, text: str) -> str:
+        """Normalize whitespace and remove junk characters."""
         text = text.replace("\f", "\n")
         text = re.sub(r"\n{3,}", "\n\n", text)
         text = re.sub(r"[ \t]{2,}", " ", text)
@@ -131,8 +130,8 @@ class Ingestor:
         return "\n".join(l.strip() for l in text.split("\n")).strip()
 
 
-    def _chunk(self, text: str, source: str) -> list[dict]:
-        """Split text into overlapping chunks."""
+    def _split_into_chunks(self, text: str, source: str) -> list[dict]:
+        """Split text into overlapping chunks for embedding."""
         chunks, start = [], 0
         while start < len(text):
             piece = text[start:start + settings.CHUNK_SIZE].strip()
@@ -142,8 +141,8 @@ class Ingestor:
         return chunks
 
 
-    def _hash_file(self, path: str) -> str:
-        """SHA-256 hash of file contents for change detection."""
+    def _compute_file_hash(self, path: str) -> str:
+        """Compute SHA-256 hash of file contents for change detection."""
         h = hashlib.sha256()
         with open(path, "rb") as f:
             for block in iter(lambda: f.read(8192), b""):
@@ -151,18 +150,18 @@ class Ingestor:
         return h.hexdigest()[:16]
 
 
-    def _load_cache(self) -> dict:
+    def _load_hash_cache(self) -> dict:
         """Load file hash cache from disk."""
         if CACHE_FILE.exists():
             return json.loads(CACHE_FILE.read_text())
         return {}
 
 
-    def _save_cache(self):
+    def _save_hash_cache(self):
         """Save file hash cache to disk."""
         CACHE_FILE.write_text(json.dumps(self._cache, indent=2))
 
 
 if __name__ == "__main__":
-    args = _parse_args()
-    Ingestor().run(drop=args.drop, purge=args.purge, drop_only=args.drop_only)
+    args = parse_cli_args()
+    Ingestor().ingest(drop=args.drop, purge=args.purge, drop_only=args.drop_only)

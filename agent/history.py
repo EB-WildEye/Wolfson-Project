@@ -1,4 +1,4 @@
-"""MongoDB chat history manager with PII scrubbing and summarization."""
+"""MongoDB chat history manager with PII scrubbing."""
 
 import re
 from pymongo import MongoClient
@@ -15,124 +15,77 @@ _PII_PATTERNS = [
     (re.compile(r"[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"), "[אימייל הוסר]"),
 ]
 
-SUMMARY_THRESHOLD = 10
-RECENT_COUNT = 4
+HISTORY_LIMIT = 20
 
 
 class ChatHistory:
-    """Manages chat persistence, PII scrubbing, and cached summarization."""
+    """Manages chat persistence and PII scrubbing."""
 
-    def __init__(self, llm=None):
-        self._llm = llm
+    def __init__(self):
         self._available = False
         try:
             self._client = MongoClient(settings.MONGO_URI, serverSelectionTimeoutMS=3000)
             self._client.admin.command("ping")
             db = self._client[settings.MONGO_DB_NAME]
             self._col = db["chat_history"]
-            self._summary_col = db["summary_cache"]
+            self._col.create_index("session_id")
             self._available = True
             log.info("MongoDB connected")
         except Exception as e:
             log.warning(f"MongoDB unavailable — history disabled: {e}")
 
 
-    def save(self, session_id: str, role: str, content: str):
-        """Scrub PII then persist message."""
-        if not self._available:
-            return
-        self._col.insert_one({"session_id": session_id, "role": role, "content": self._scrub_pii(content)})
-
-
-    def save_turn(self, session_id: str, user_msg: str, assistant_msg: str):
+    def save_conversation_turn(self, session_id: str, user_msg: str, assistant_msg: str):
         """Atomically save both user and assistant messages."""
         if not self._available:
             return
         docs = [
-            {"session_id": session_id, "role": "user", "content": self._scrub_pii(user_msg)},
-            {"session_id": session_id, "role": "assistant", "content": self._scrub_pii(assistant_msg)},
+            {"session_id": session_id, "role": "user", "content": self._remove_pii(user_msg)},
+            {"session_id": session_id, "role": "assistant", "content": self._remove_pii(assistant_msg)},
         ]
         self._col.insert_many(docs)
 
 
-    def ping(self):
+    def check_connection(self):
         """Lightweight check that MongoDB is reachable."""
         if not self._available:
             raise ConnectionError("MongoDB not connected")
         self._client.admin.command("ping")
 
 
-    def get(self, session_id: str, limit: int = 20) -> list[dict]:
+    def get_messages(self, session_id: str, limit: int = HISTORY_LIMIT) -> list[dict]:
         """Return last N messages for a session, oldest first."""
         if not self._available:
             return []
-        cursor = self._col.find({"session_id": session_id}, {"_id": 0, "role": 1, "content": 1}).sort("_id", -1).limit(limit)
+        cursor = (
+            self._col.find({"session_id": session_id}, {"_id": 0, "role": 1, "content": 1})
+            .sort("_id", -1)
+            .limit(limit)
+        )
         msgs = list(cursor)
         msgs.reverse()
         return msgs
 
 
-    def get_condensed(self, session_id: str) -> str:
-        """Return history as text — uses cached summary if available."""
-        msgs = self.get(session_id)
-        if not msgs:
-            return ""
+    def get_chat_history(self, session_id: str) -> list[dict]:
+        """Return chat history in Gemini-native format.
 
-        if len(msgs) <= SUMMARY_THRESHOLD:
-            lines = [f"{'Patient' if m['role']=='user' else 'Gali'}: {m['content']}" for m in msgs]
-            return "\n### Conversation History:\n" + "\n".join(lines) + "\n"
-
-        older = msgs[:-RECENT_COUNT]
-        recent = msgs[-RECENT_COUNT:]
-
-        summary = self._get_cached_summary(session_id, len(older))
-        recent_lines = [f"{'Patient' if m['role']=='user' else 'Gali'}: {m['content']}" for m in recent]
-        return f"\n### Summary of earlier conversation:\n{summary}\n\n### Recent messages:\n" + "\n".join(recent_lines) + "\n"
+        Converts MongoDB messages to the format expected by Gemini's Chat API:
+          [{"role": "user"|"model", "parts": [{"text": "..."}]}]
+        """
+        msgs = self.get_messages(session_id)
+        history = []
+        for msg in msgs:
+            # MongoDB stores "assistant", Gemini expects "model"
+            role = "model" if msg["role"] == "assistant" else "user"
+            history.append({"role": role, "parts": [{"text": msg["content"]}]})
+        return history
 
 
-    def _get_cached_summary(self, session_id: str, msg_count: int) -> str:
-        """Return cached summary or generate + cache a new one."""
-        if self._available:
-            cached = self._summary_col.find_one({"session_id": session_id})
-            if cached and cached.get("msg_count") == msg_count:
-                log.debug("Using cached summary")
-                return cached["summary"]
-
-        summary = self._summarize_messages(session_id, msg_count)
-
-        if self._available:
-            self._summary_col.update_one(
-                {"session_id": session_id},
-                {"$set": {"summary": summary, "msg_count": msg_count}},
-                upsert=True,
-            )
-            log.info(f"Summary cached | session={session_id} | msgs={msg_count}")
-
-        return summary
-
-
-    def _summarize_messages(self, session_id: str, count: int) -> str:
-        """Summarize older messages via Gemini."""
-        if not self._llm:
-            return "[summary unavailable]"
-        msgs = self.get(session_id, limit=count + RECENT_COUNT)
-        older = msgs[:count]
-        text = "\n".join(f"{m['role']}: {m['content']}" for m in older)
-        prompt = (
-            "Summarize this conversation in 2-3 bullet points. "
-            "Keep: patient name, medical topics, key decisions. "
-            "Remove: greetings, disclaimers, filler.\n\n" + text
-        )
-        response = self._llm._client.models.generate_content(model=settings.GEMINI_MODEL, contents=prompt)
-        log.info(f"Generated summary for {count} messages")
-        return response.text
-
-
-    def _scrub_pii(self, text: str) -> str:
+    def _remove_pii(self, text: str) -> str:
         """Remove Israeli IDs, phone numbers, and emails."""
         for pattern, replacement in _PII_PATTERNS:
             if pattern.search(text):
                 log.info(f"PII scrubbed: {replacement}")
                 text = pattern.sub(replacement, text)
         return text
-
