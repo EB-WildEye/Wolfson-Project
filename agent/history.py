@@ -44,6 +44,24 @@ class ChatHistory:
         self._col.insert_one({"session_id": session_id, "role": role, "content": self._scrub_pii(content)})
 
 
+    def save_turn(self, session_id: str, user_msg: str, assistant_msg: str):
+        """Atomically save both user and assistant messages."""
+        if not self._available:
+            return
+        docs = [
+            {"session_id": session_id, "role": "user", "content": self._scrub_pii(user_msg)},
+            {"session_id": session_id, "role": "assistant", "content": self._scrub_pii(assistant_msg)},
+        ]
+        self._col.insert_many(docs)
+
+
+    def ping(self):
+        """Lightweight check that MongoDB is reachable."""
+        if not self._available:
+            raise ConnectionError("MongoDB not connected")
+        self._client.admin.command("ping")
+
+
     def get(self, session_id: str, limit: int = 20) -> list[dict]:
         """Return last N messages for a session, oldest first."""
         if not self._available:

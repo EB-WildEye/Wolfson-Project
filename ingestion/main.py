@@ -58,6 +58,7 @@ class Ingestor:
 
         if purge and CACHE_FILE.exists():
             CACHE_FILE.unlink()
+            self._cache = {}
             log.warning("Hash cache cleared")
 
         if drop_only:

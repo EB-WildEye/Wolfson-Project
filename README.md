@@ -12,19 +12,32 @@ Built for the Gynecology Department at **Wolfson Medical Center**.
 Gali/
 ├── .python-version          # Python 3.12 (managed by uv)
 ├── pyproject.toml           # Dependencies (managed by uv)
-├── .env                     # API keys
+├── .env                     # API keys & config
 │
 ├── ingestion/               # Step 1: Ingest documents
 │   ├── main.py              #   Load → Chunk → Embed → Store
 │   └── data/                #   Drop your PDFs/CSVs here
 │
-├── agent/                   # Step 2: RAG logic
-│   ├── main.py              #   Retrieve → Prompt → LLM → Answer
-│   └── utils.py             #   Shared: ChromaDB connection, retriever
+├── agent/                   # Step 2: RAG logic + API server
+│   ├── server.py            #   FastAPI REST API
+│   ├── llm.py               #   Gemini LLM client
+│   ├── vectorstore.py       #   LanceDB vector store
+│   ├── history.py           #   MongoDB chat history
+│   ├── prompt.py            #   Prompt templates
+│   ├── config.py            #   Settings from .env
+│   └── logger.py            #   Logging setup
 │
 └── ui/                      # Step 3: Chat interface
     └── app.py               #   Streamlit chat UI
 ```
+
+## Prerequisites
+
+- **Python 3.12+**
+- **[uv](https://docs.astral.sh/uv/)** — Python package manager
+- **MongoDB 7.0+** — for chat history storage
+
+---
 
 ## Quick Start
 
@@ -35,12 +48,16 @@ cd Gali/
 uv sync
 ```
 
-### 2. Set your API key
+### 2. Configure environment
 
-Edit `.env` and add your OpenAI API key:
+Edit `.env` and set your Gemini API key:
 
 ```
-OPENAI_API_KEY=sk-your-key-here
+GEMINI_API_KEY=your-gemini-key-here
+GEMINI_MODEL=gemini-2.5-pro
+EMBED_MODEL=gemini-embedding-001
+MONGO_URI=mongodb://localhost:27017
+LANCEDB_PATH=./lancedb_data
 ```
 
 ### 3. Add documents
@@ -53,15 +70,35 @@ Drop your PDF and/or CSV files into `ingestion/data/`.
 uv run python -m ingestion.main
 ```
 
-This will chunk your documents and store embeddings in a local ChromaDB at `./chroma_db/`.
+This will chunk your documents and store embeddings in a local LanceDB at `./lancedb_data/`.
 
-### 5. Test the agent (CLI)
+---
+
+## Running the Project
+
+You need **3 terminals** (all from the `Gali/` directory). Start them in this order:
+
+### Terminal 1 — 🍃 MongoDB
 
 ```bash
-uv run python -m agent.main "What are the department guidelines for X?"
+sudo systemctl start mongod
 ```
 
-### 6. Launch the chat UI
+Verify it's running:
+
+```bash
+mongosh --eval "db.runCommand({ ping: 1 })"
+```
+
+### Terminal 2 — 🚀 Backend (FastAPI)
+
+```bash
+uv run uvicorn agent.server:app --reload --port 8000
+```
+
+API will be available at http://localhost:8000 (docs at http://localhost:8000/docs).
+
+### Terminal 3 — 🖥️ UI (Streamlit)
 
 ```bash
 uv run streamlit run ui/app.py
@@ -73,15 +110,27 @@ Open http://localhost:8501 in your browser.
 
 ## Tech Stack
 
-| Component       | Technology           |
-| --------------- | -------------------- |
-| Language        | Python 3.12          |
-| Package Manager | uv                   |
-| LLM Framework   | LangChain            |
-| LLM             | GPT-4o-mini (OpenAI) |
-| Vector Store    | ChromaDB (local)     |
-| Document Loaders| PyPDF, CSVLoader     |
-| UI              | Streamlit            |
+| Component        | Technology                    |
+| ---------------- | ----------------------------- |
+| Language         | Python 3.12                   |
+| Package Manager  | uv                            |
+| LLM              | Gemini 2.5 Pro (Google)       |
+| Embeddings       | Gemini Embedding 001          |
+| Vector Store     | LanceDB (local, serverless)   |
+| Chat History     | MongoDB                       |
+| Backend API      | FastAPI + Uvicorn              |
+| UI               | Streamlit                     |
+| Document Loaders | pdfplumber                    |
+
+---
+
+## API Endpoints
+
+| Method | Endpoint                        | Description              |
+| ------ | ------------------------------- | ------------------------ |
+| POST   | `/api/v1/chat`                  | Send a chat message      |
+| GET    | `/api/v1/history/{session_id}`  | Get session chat history |
+| GET    | `/api/v1/health`                | Health check             |
 
 ---
 

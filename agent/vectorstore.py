@@ -46,3 +46,9 @@ class VectorStore:
             return self._db.open_table(settings.LANCEDB_TABLE).count_rows()
         except Exception:
             return 0
+
+
+    def ping(self):
+        """Lightweight check that LanceDB is reachable and the table exists."""
+        self._db.open_table(settings.LANCEDB_TABLE)
+

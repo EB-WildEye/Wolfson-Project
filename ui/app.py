@@ -1,15 +1,10 @@
-"""
-ui/app.py – Gali chat UI (clean minimal, purple-sage, RTL).
-
-Run:  uv run streamlit run ui/app.py
-"""
-
 import streamlit as st
 import requests
 import uuid
 import markdown
 
-API_URL = "http://localhost:8001/api/v1"
+
+api_url = "http://localhost:8000/api/v1"
 
 st.set_page_config(page_title="גלי – עוזרת AI גינקולוגיה", layout="wide")
 
@@ -28,7 +23,7 @@ section[data-testid="stSidebar"] {
 /* ── Page background ── */
 .stApp { background: #faf8f6 !important; }
 
-/* ── Kill ALL default padding on main container ── */
+/* ── Remove all padding on the main container ── */
 .stMainBlockContainer,
 [data-testid="stMainBlockContainer"] {
     padding-top: 0 !important;
@@ -156,11 +151,7 @@ section[data-testid="stSidebar"] hr { border-color: #e2dce8 !important; }
     30% { opacity: 1; }
 }
 
-/* ══════════════════════════════════════════════
-   INPUT BAR – nuclear override for dark bg
-   ══════════════════════════════════════════════ */
-
-/* The entire bottom dock */
+/* ── Input bar ── */
 [data-testid="stBottom"],
 [data-testid="stBottom"] > *,
 [data-testid="stBottom"] > * > *,
@@ -171,7 +162,6 @@ section[data-testid="stSidebar"] hr { border-color: #e2dce8 !important; }
     background-color: #faf8f6 !important;
 }
 
-/* The chat input wrapper and all children */
 [data-testid="stChatInput"],
 [data-testid="stChatInput"] > *,
 [data-testid="stChatInput"] > * > *,
@@ -186,7 +176,6 @@ section[data-testid="stSidebar"] hr { border-color: #e2dce8 !important; }
     background-color: #ffffff !important;
 }
 
-/* The actual visible input container */
 .stChatInput > div,
 [data-testid="stChatInput"] > div {
     background: #ffffff !important;
@@ -196,14 +185,12 @@ section[data-testid="stSidebar"] hr { border-color: #e2dce8 !important; }
     box-shadow: none !important;
 }
 
-/* Focus state */
 .stChatInput > div:focus-within,
 [data-testid="stChatInput"] > div:focus-within {
     border-color: #a48db8 !important;
     box-shadow: none !important;
 }
 
-/* Textarea itself */
 .stChatInput textarea,
 [data-testid="stChatInput"] textarea {
     direction: rtl !important;
@@ -219,7 +206,6 @@ section[data-testid="stSidebar"] hr { border-color: #e2dce8 !important; }
     color: #c0b5ca !important;
 }
 
-/* Send button */
 .stChatInput button,
 [data-testid="stChatInput"] button {
     background: #a48db8 !important;
@@ -268,8 +254,7 @@ section[data-testid="stSidebar"] hr { border-color: #e2dce8 !important; }
 </style>
 """, unsafe_allow_html=True)
 
-# ── Header ────────────────────────────────────────────────────
-
+# Header section
 st.markdown("""
 <div class="gali-header">
     <h1>גלי</h1>
@@ -277,8 +262,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# ── Session State (persistent via URL query param) ────────────
-
+# Session state management
 query_params = st.query_params
 param_session = query_params.get("session", None)
 
@@ -286,16 +270,14 @@ if "session_id" not in st.session_state:
     if param_session:
         st.session_state.session_id = param_session
     else:
-        st.session_state.session_id = str(uuid.uuid4())[:8]
+        st.session_state.session_id = str(uuid.uuid4())
         st.query_params["session"] = st.session_state.session_id
 
 if "messages" not in st.session_state:
-    # Try to load existing history from MongoDB
+    # Load previous chat history from the API
     loaded = []
     try:
-        resp = requests.get(
-            f"{API_URL}/history/{st.session_state.session_id}", timeout=5
-        )
+        resp = requests.get(f"{api_url}/history/{st.session_state.session_id}", timeout=10)
         if resp.ok:
             loaded = resp.json()
     except Exception:
@@ -308,16 +290,14 @@ if "messages" not in st.session_state:
             {"role": "assistant", "content": "היי, אני גלי, העוזרת הדיגיטלית של מחלקת נשים בוולפסון. לפני שנתחיל, מה שמך?"}
         ]
 
-# ── Sidebar ───────────────────────────────────────────────────
-
+# Sidebar content
 with st.sidebar:
     st.markdown("### אודות")
     st.markdown("**גלי** עונה על שאלות מתוך פרוטוקולים, הנחיות ומסמכים רפואיים של המחלקה.")
     st.markdown("---")
     st.markdown('<div class="disclaimer">גלי היא עוזרת AI ואינה מחליפה ייעוץ רפואי מקצועי. יש להתייעץ תמיד עם רופא/ה.</div>', unsafe_allow_html=True)
 
-# ── Render Chat ───────────────────────────────────────────────
-
+# Chat rendering function
 def render_chat():
     parts = ['<div class="chat-container">']
     for msg in st.session_state.messages:
@@ -332,11 +312,11 @@ def render_chat():
     parts.append('</div>')
     return "\n".join(parts)
 
+# Display chat area
 chat_area = st.empty()
 chat_area.markdown(render_chat(), unsafe_allow_html=True)
 
-# ── Chat Input ────────────────────────────────────────────────
-
+# Handle user input
 if user_input := st.chat_input("כתבי כאן את השאלה..."):
     st.session_state.messages.append({"role": "user", "content": user_input})
     typing = render_chat().rstrip('</div>') + (
@@ -346,7 +326,7 @@ if user_input := st.chat_input("כתבי כאן את השאלה..."):
     )
     chat_area.markdown(typing, unsafe_allow_html=True)
     try:
-        resp = requests.post(f"{API_URL}/chat", json={"query": user_input, "session_id": st.session_state.session_id}, timeout=60)
+        resp = requests.post(f"{api_url}/chat", json={"query": user_input, "session_id": st.session_state.session_id}, timeout=60)
         resp.raise_for_status()
         data = resp.json()
         answer = data["answer"]

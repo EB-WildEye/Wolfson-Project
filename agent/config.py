@@ -30,5 +30,12 @@ class Settings(BaseSettings):
 
     API_PORT: int = 8001
 
+    # CORS — override in .env for production, e.g. ALLOWED_ORIGINS='["https://gali.hospital.com"]'
+    ALLOWED_ORIGINS: list[str] = [
+        "http://localhost:8501",   # Streamlit UI
+        "http://localhost:3000",   # React dev (if used)
+        "http://127.0.0.1:8501",
+    ]
+
 
 settings = Settings() 
