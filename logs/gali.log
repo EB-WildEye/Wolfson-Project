@@ -863,3 +863,144 @@
 2026-03-06 19:57:54 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
 2026-03-06 19:57:54 | INFO     | agent.history | MongoDB connected
 2026-03-06 19:57:54 | INFO     | agent.server | All services initialized
+2026-03-17 20:13:37 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-17 20:13:37 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-17 20:13:37 | WARNING  | agent.vectorstore | Dropped table 'documents'
+2026-03-17 20:13:37 | WARNING  | __main__ | Hash cache cleared
+2026-03-17 20:13:37 | INFO     | __main__ | Existing rows: 0
+2026-03-17 20:13:37 | INFO     | __main__ | Processing: D&C_D&E.pdf
+2026-03-17 20:13:48 | INFO     | __main__ |   → 51 chunks from 30207 chars
+2026-03-17 20:13:48 | INFO     | __main__ | Processing: Disclaimers.pdf
+2026-03-17 20:13:49 | INFO     | __main__ |   → 4 chunks from 2386 chars
+2026-03-17 20:13:49 | INFO     | __main__ | Processing: INDUCED.pdf
+2026-03-17 20:14:00 | INFO     | __main__ |   → 88 chunks from 52732 chars
+2026-03-17 20:14:00 | INFO     | __main__ | Processing: Missed_abortio.pdf
+2026-03-17 20:14:05 | INFO     | __main__ |   → 62 chunks from 36782 chars
+2026-03-17 20:14:05 | INFO     | __main__ | Embedding 205 chunks...
+2026-03-17 20:14:09 | INFO     | __main__ |   Embedded 10/205
+2026-03-17 20:14:12 | INFO     | __main__ |   Embedded 20/205
+2026-03-17 20:14:15 | INFO     | __main__ |   Embedded 30/205
+2026-03-17 20:14:19 | INFO     | __main__ |   Embedded 40/205
+2026-03-17 20:14:22 | INFO     | __main__ |   Embedded 50/205
+2026-03-17 20:14:25 | INFO     | __main__ |   Embedded 60/205
+2026-03-17 20:14:29 | INFO     | __main__ |   Embedded 70/205
+2026-03-17 20:14:32 | INFO     | __main__ |   Embedded 80/205
+2026-03-17 20:14:35 | INFO     | __main__ |   Embedded 90/205
+2026-03-17 20:14:38 | INFO     | __main__ |   Embedded 100/205
+2026-03-17 20:14:41 | INFO     | __main__ |   Embedded 110/205
+2026-03-17 20:14:45 | INFO     | __main__ |   Embedded 120/205
+2026-03-17 20:14:48 | INFO     | __main__ |   Embedded 130/205
+2026-03-17 20:14:51 | INFO     | __main__ |   Embedded 140/205
+2026-03-17 20:15:57 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-17 20:15:58 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-17 20:15:58 | INFO     | __main__ | Existing rows: 0
+2026-03-17 20:15:58 | INFO     | __main__ | Processing: D&C_D&E.pdf
+2026-03-17 20:16:02 | INFO     | __main__ |   → 51 chunks from 30207 chars
+2026-03-17 20:16:02 | INFO     | __main__ | Processing: Disclaimers.pdf
+2026-03-17 20:16:02 | INFO     | __main__ |   → 4 chunks from 2386 chars
+2026-03-17 20:16:02 | INFO     | __main__ | Processing: INDUCED.pdf
+2026-03-17 20:16:09 | INFO     | __main__ |   → 88 chunks from 52732 chars
+2026-03-17 20:16:09 | INFO     | __main__ | Processing: Missed_abortio.pdf
+2026-03-17 20:16:13 | INFO     | __main__ |   → 62 chunks from 36782 chars
+2026-03-17 20:16:13 | INFO     | __main__ | Embedding 205 chunks...
+2026-03-17 20:16:17 | INFO     | __main__ |   Embedded 10/205
+2026-03-17 20:16:20 | INFO     | __main__ |   Embedded 20/205
+2026-03-17 20:16:23 | INFO     | __main__ |   Embedded 30/205
+2026-03-17 20:16:26 | INFO     | __main__ |   Embedded 40/205
+2026-03-17 20:16:29 | INFO     | __main__ |   Embedded 50/205
+2026-03-17 20:16:32 | INFO     | __main__ |   Embedded 60/205
+2026-03-17 20:16:35 | INFO     | __main__ |   Embedded 70/205
+2026-03-17 20:16:39 | INFO     | __main__ |   Embedded 80/205
+2026-03-17 20:16:42 | INFO     | __main__ |   Embedded 90/205
+2026-03-17 20:16:45 | INFO     | __main__ |   Embedded 100/205
+2026-03-17 20:16:48 | INFO     | __main__ |   Embedded 110/205
+2026-03-17 20:16:51 | INFO     | __main__ |   Embedded 120/205
+2026-03-17 20:16:54 | INFO     | __main__ |   Embedded 130/205
+2026-03-17 20:16:57 | INFO     | __main__ |   Embedded 140/205
+2026-03-17 20:17:00 | INFO     | __main__ |   Embedded 150/205
+2026-03-17 20:17:04 | INFO     | __main__ |   Embedded 160/205
+2026-03-17 20:17:07 | INFO     | __main__ |   Embedded 170/205
+2026-03-17 20:17:10 | INFO     | __main__ |   Embedded 180/205
+2026-03-17 20:17:13 | INFO     | __main__ |   Embedded 190/205
+2026-03-17 20:17:16 | INFO     | __main__ |   Embedded 200/205
+2026-03-17 20:17:18 | INFO     | agent.vectorstore | Stored 205 chunks in 'documents'
+2026-03-17 20:17:18 | INFO     | __main__ | Done | 205 chunks stored | 0 skipped | 80.7s
+2026-03-17 20:20:59 | INFO     | agent.server | Starting Gali API server...
+2026-03-17 20:21:00 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-17 20:21:00 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-17 20:21:01 | INFO     | agent.history | MongoDB connected
+2026-03-17 20:21:01 | INFO     | agent.server | All services initialized
+2026-03-17 20:22:06 | INFO     | agent.server | [2be6dd41-49fb-42e0-a4f6-f3f38c5fc0b7] GET /api/v1/history/72bb43b8-713d-414f-a9db-2b56ee20e775 → 200 (65.8ms)
+2026-03-17 21:11:05 | INFO     | agent.server | [140a611d-2cd9-44bb-a172-7dfe6a86ee22] GET /api/v1/history/72bb43b8-713d-414f-a9db-2b56ee20e775 → 200 (10.5ms)
+2026-03-17 21:12:07 | DEBUG    | agent.vectorstore | Search returned 4 results | query: טלי
+2026-03-17 21:12:10 | WARNING  | agent.llm | Gemini transient error (attempt 1/3), retrying in 2s: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand 
+2026-03-17 21:12:14 | WARNING  | agent.llm | Gemini transient error (attempt 2/3), retrying in 4s: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand 
+2026-03-17 21:12:18 | ERROR    | agent.llm | Gemini failed after 3 attempt(s): 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
+2026-03-17 21:12:18 | INFO     | agent.server | [5da260a8-34f9-4fbf-93da-12ddda432c9a] POST /api/v1/chat → 503 (23361.3ms)
+2026-03-17 21:19:44 | INFO     | agent.server | Shutting down Gali API server
+2026-03-17 21:20:34 | INFO     | agent.server | Starting Gali API server...
+2026-03-17 21:20:35 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-17 21:20:35 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-17 21:20:35 | INFO     | agent.history | MongoDB connected
+2026-03-17 21:20:35 | INFO     | agent.server | All services initialized
+2026-03-17 21:22:24 | INFO     | agent.server | [458e2b2b-d4ff-4431-b1c7-538d2610cdb3] GET /api/v1/history/6ac1e77f-14f6-41de-8dfa-0b332bf9d13d → 200 (7.7ms)
+2026-03-17 21:22:40 | DEBUG    | agent.vectorstore | Search returned 4 results | query: יעל
+2026-03-17 21:22:49 | INFO     | agent.llm | Generated 170 chars | query: יעל
+2026-03-17 21:22:49 | INFO     | agent.server | session=6ac1e77f-14f6-41de-8dfa-0b332bf9d13d sources=['INDUCED.pdf', 'Missed_abortio.pdf', 'D&C_D&E.pdf']
+2026-03-17 21:22:49 | INFO     | agent.server | [1f922810-7121-4710-adf8-73b2eb17d11e] POST /api/v1/chat → 200 (10345.5ms)
+2026-03-17 21:23:27 | DEBUG    | agent.vectorstore | Search returned 4 results | query: אני רוצה לעשות הפלה, יש לי מחר תור עם הר
+2026-03-17 21:23:28 | WARNING  | agent.llm | Gemini transient error (attempt 1/3), retrying in 2s: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand 
+2026-03-17 21:23:59 | INFO     | agent.llm | Generated 996 chars | query: אני רוצה לעשות הפלה, יש לי מחר תור עם הרופא אבל אנ
+2026-03-17 21:23:59 | INFO     | agent.server | session=6ac1e77f-14f6-41de-8dfa-0b332bf9d13d sources=['INDUCED.pdf']
+2026-03-17 21:23:59 | INFO     | agent.server | [2706edc4-77b2-4411-9eb4-7ca9b251908a] POST /api/v1/chat → 200 (32168.3ms)
+2026-03-17 21:25:01 | DEBUG    | agent.vectorstore | Search returned 4 results | query: אני בשבוע מתקדם,  אחרי ה-9 תני לי עוד מי
+2026-03-17 21:25:19 | INFO     | agent.llm | Generated 502 chars | query: אני בשבוע מתקדם,  אחרי ה-9 תני לי עוד מידע, יותר פ
+2026-03-17 21:25:19 | INFO     | agent.server | session=6ac1e77f-14f6-41de-8dfa-0b332bf9d13d sources=['INDUCED.pdf', 'Missed_abortio.pdf']
+2026-03-17 21:25:19 | INFO     | agent.server | [e7c3c280-50ce-487b-9953-8793fde2e395] POST /api/v1/chat → 200 (18212.0ms)
+2026-03-17 21:31:18 | INFO     | agent.server | [0083e63a-2ef1-4ec4-a240-040db7470c76] GET /api/v1/history/15b968e9-7b95-4935-b886-16d0b8a16066 → 200 (4.4ms)
+2026-03-17 21:32:09 | DEBUG    | agent.vectorstore | Search returned 4 results | query: אלה
+2026-03-17 21:32:17 | WARNING  | agent.llm | Gemini transient error (attempt 1/3), retrying in 2s: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand 
+2026-03-17 21:32:20 | WARNING  | agent.llm | Gemini transient error (attempt 2/3), retrying in 4s: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand 
+2026-03-17 21:32:25 | ERROR    | agent.llm | Gemini failed after 3 attempt(s): 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand are usually temporary. Please try again later.', 'status': 'UNAVAILABLE'}}
+2026-03-17 21:32:25 | INFO     | agent.server | [e1dee79c-6c2a-456a-afb5-290c4f926f3c] POST /api/v1/chat → 503 (16349.0ms)
+2026-03-17 21:33:59 | INFO     | agent.server | Shutting down Gali API server
+2026-03-17 21:36:55 | INFO     | agent.server | Starting Gali API server...
+2026-03-17 21:36:56 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-17 21:36:56 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-17 21:36:56 | INFO     | agent.history | MongoDB connected
+2026-03-17 21:36:56 | INFO     | agent.server | All services initialized
+2026-03-17 21:45:12 | INFO     | agent.server | Shutting down Gali API server
+2026-03-17 21:46:00 | INFO     | agent.server | Starting Gali API server...
+2026-03-17 21:46:00 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-17 21:46:00 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-17 21:46:00 | INFO     | agent.history | MongoDB connected
+2026-03-17 21:46:00 | INFO     | agent.server | All services initialized
+2026-03-17 21:46:26 | INFO     | agent.server | [ce993c87-5b18-453a-ab3a-aabd496121ea] GET /api/v1/history/8ef997d0-7469-44ee-a53e-729672163fd5 → 200 (4.8ms)
+2026-03-17 21:46:40 | DEBUG    | agent.vectorstore | Search returned 4 results | query: יערה
+2026-03-17 21:46:45 | INFO     | agent.llm | Generated 26 chars | query: יערה
+2026-03-17 21:46:45 | INFO     | agent.server | session=8ef997d0-7469-44ee-a53e-729672163fd5 sources=['Missed_abortio.pdf', 'INDUCED.pdf']
+2026-03-17 21:46:45 | INFO     | agent.server | [603fd068-8e60-47c7-804a-568c45d4b981] POST /api/v1/chat → 200 (5803.0ms)
+2026-03-17 21:47:08 | DEBUG    | agent.vectorstore | Search returned 4 results | query: אני רוצה להבין מה התליך של הפלה לפני שאנ
+2026-03-17 21:47:31 | INFO     | agent.llm | Generated 1205 chars | query: אני רוצה להבין מה התליך של הפלה לפני שאני עושה, אנ
+2026-03-17 21:47:31 | INFO     | agent.history | PII scrubbed: [ת.ז. הוסר]
+2026-03-17 21:47:31 | INFO     | agent.history | PII scrubbed: [טלפון הוסר]
+2026-03-17 21:47:31 | INFO     | agent.server | session=8ef997d0-7469-44ee-a53e-729672163fd5 sources=['INDUCED.pdf', 'D&C_D&E.pdf']
+2026-03-17 21:47:31 | INFO     | agent.server | [3621aa54-5ab2-4cd4-928f-5939cc764555] POST /api/v1/chat → 200 (22880.5ms)
+2026-03-17 21:48:12 | DEBUG    | agent.vectorstore | Search returned 4 results | query: אז איך אספיק לתרופתי? אני ממש על הקשקש, 
+2026-03-17 21:48:30 | INFO     | agent.llm | Generated 557 chars | query: אז איך אספיק לתרופתי? אני ממש על הקשקש, תוך כמה זמ
+2026-03-17 21:48:30 | INFO     | agent.history | PII scrubbed: [ת.ז. הוסר]
+2026-03-17 21:48:30 | INFO     | agent.history | PII scrubbed: [טלפון הוסר]
+2026-03-17 21:48:30 | INFO     | agent.server | session=8ef997d0-7469-44ee-a53e-729672163fd5 sources=['INDUCED.pdf', 'D&C_D&E.pdf', 'Missed_abortio.pdf']
+2026-03-17 21:48:30 | INFO     | agent.server | [3d7b6563-7a7d-46cd-9749-52fffe2973b9] POST /api/v1/chat → 200 (19042.2ms)
+2026-03-17 22:12:09 | INFO     | agent.server | Shutting down Gali API server
+2026-03-17 22:12:29 | INFO     | agent.server | Starting Gali API server...
+2026-03-17 22:12:30 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-17 22:12:30 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-17 22:12:30 | INFO     | agent.history | MongoDB connected
+2026-03-17 22:12:30 | INFO     | agent.server | All services initialized
+2026-03-17 22:13:51 | INFO     | agent.server | Shutting down Gali API server
+2026-03-17 22:14:09 | INFO     | agent.server | Starting Gali API server...
+2026-03-17 22:14:10 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-17 22:14:10 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-17 22:14:10 | INFO     | agent.history | MongoDB connected
+2026-03-17 22:14:10 | INFO     | agent.server | All services initialized
