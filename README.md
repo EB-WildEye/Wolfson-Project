@@ -2,7 +2,7 @@
 
 > RAG-powered medical assistant for the Women's Health Department at **Wolfson Medical Center**.
 
-Gali ingests department PDFs and CSVs, embeds them into a local vector store, and provides an AI chat interface grounded in real clinical documents — with built-in safety protocols, session history, and prompt-injection protection.
+Gali ingests department PDFs and CSVs, embeds them into **LanceDB** (vector store), and provides an AI chat interface grounded in real clinical documents — with built-in safety protocols, ephemeral session history (**MongoDB**), and prompt-injection protection.
 
 ---
 
@@ -10,28 +10,26 @@ Gali ingests department PDFs and CSVs, embeds them into a local vector store, an
 
 ```
 Gali/
-├── pyproject.toml                # Dependencies (managed by uv)
-├── .python-version               # Python 3.12
-├── .env                          # API keys & config (git-ignored)
+├── shared/                       # Shared Lambda Layer
+│   ├── db.py                     #   MongoDB session store (chat history ONLY — not RAG)
+│   ├── pii.py                    #   PII scrubbing (IDs, phones, emails)
+│   └── config.py                 #   Secrets Manager + env settings
 │
-├── ingestion/                    # Document ingestion pipeline
-│   ├── main.py                   #   CLI: Load → Clean → Chunk → Embed → Store
-│   └── data/                     #   Drop your PDFs / CSVs here
+├── endpoints/                    # API Lambdas
+│   ├── session/                  #   λ1 — Session: UUID + history retrieval
+│   ├── chat/                     #   λ2 — Chat: RAG pipeline (LanceDB + Gemini)
+│   └── cleanup/                  #   λ4 — Cleanup: delete messages > 24h
 │
-├── agent/                        # Backend — RAG engine + API
-│   ├── server.py                 #   FastAPI REST API (routes, CORS, middleware)
-│   ├── llm.py                    #   Gemini LLM client
-│   ├── vectorstore.py            #   LanceDB vector store
-│   ├── history.py                #   MongoDB chat history + summarization
-│   ├── prompt.py                 #   System prompt & safety protocols
-│   ├── config.py                 #   Centralized settings from .env
-│   └── logger.py                 #   Structured logging
+├── data/                         # Ingestion Lambda
+│   └── handler.py                #   λ3 — S3 trigger → embed → store in LanceDB
 │
-├── ui/                           # Frontend — Chat interface
-│   └── app.py                    #   Streamlit chat UI
+├── frontend/                     # Next.js App (AWS Amplify)
+│   └── src/
 │
+├── agent/                        # OLD MONOLITH (kept for reference)
+├── ingestion/                    # OLD INGESTION (kept for reference)
 ├── lancedb_data/                 # Vector DB storage (git-ignored)
-└── logs/                         # Application logs
+└── .env                          # API keys & config (git-ignored)
 ```
 
 ---
@@ -153,20 +151,29 @@ uv run python -m ingestion.main --purge  # full rebuild
 
 ---
 
+## Data Store Roles
+
+| Store | Purpose | Data Lifetime | Used By |
+|-------|---------|---------------|---------|
+| **LanceDB** | Vector Store — RAG knowledge base (embedded medical protocols) | Permanent | λ2 Chat, λ3 Ingestion |
+| **MongoDB** | Session Store — ephemeral chat messages (user ↔ assistant turns) | **24 hours** (then deleted) | λ1 Session, λ2 Chat, λ4 Cleanup |
+
+> **Crucial:** No vector search or RAG is performed on MongoDB. All RAG retrieval goes through LanceDB.
+
 ## Tech Stack
 
-| Component        | Technology                  |
-| ---------------- | --------------------------- |
-| Language         | Python 3.12                 |
-| Package Manager  | uv                          |
-| LLM              | Gemini 2.5 Flash (Google)   |
-| Embeddings       | Gemini Embedding 001        |
-| Vector Store     | LanceDB (local, serverless) |
-| Chat History     | MongoDB                     |
-| Backend          | FastAPI + Uvicorn            |
-| UI               | Streamlit                   |
-| Document Parsing | pdfplumber                  |
-| Config           | pydantic-settings            |
+| Component        | Technology                         |
+| ---------------- | ---------------------------------- |
+| Language         | Python 3.12                        |
+| LLM              | Gemini 2.5 Flash (Google)          |
+| Embeddings       | Gemini Embedding 001               |
+| Vector Store     | LanceDB (RAG knowledge retrieval)  |
+| Session Store    | MongoDB (ephemeral chat history)   |
+| Backend          | AWS Lambda + Powertools            |
+| API              | API Gateway (HTTP)                 |
+| Frontend         | Next.js 14 (React) — AWS Amplify   |
+| Document Parsing | pdfplumber                         |
+| Config           | AWS Secrets Manager + env vars     |
 
 ---
 
