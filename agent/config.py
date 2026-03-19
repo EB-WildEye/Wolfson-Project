@@ -1,7 +1,5 @@
 """Centralized config via pydantic-settings."""
 
-import os
-import shutil
 from pathlib import Path
 from typing import Literal
 from pydantic import SecretStr
@@ -41,15 +39,4 @@ class Settings(BaseSettings):
 
 
 settings = Settings()
-
-# ── Vercel adaptation ────────────────────────────────────────
-# Vercel's deployment bundle is read-only, but LanceDB may need
-# write access (lock files, internal caches). On cold start we
-# copy the pre-built data to /tmp which is writable and persists
-# across warm invocations of the same function instance.
-if os.getenv("VERCEL"):
-    _tmp_db = Path("/tmp/lancedb_data")
-    if not _tmp_db.exists() and settings.LANCEDB_PATH.exists():
-        shutil.copytree(settings.LANCEDB_PATH, _tmp_db)
-    settings.LANCEDB_PATH = _tmp_db
 

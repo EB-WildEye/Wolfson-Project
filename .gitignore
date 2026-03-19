@@ -11,7 +11,7 @@ build/
 
 # Data stores — lancedb_data/ is committed (pre-built vectors for Vercel)
 # lancedb_data/
-
+DEPLOY.md
 # IDE
 .vscode/
 .idea/
