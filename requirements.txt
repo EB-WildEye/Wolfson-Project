@@ -1,0 +1,8 @@
+google-genai>=1.0
+lancedb>=0.20
+pymongo>=4.0
+fastapi>=0.115
+uvicorn>=0.34
+pdfplumber>=0.11
+pydantic-settings>=2.0
+markdown>=3.5

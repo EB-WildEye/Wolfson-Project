@@ -9,8 +9,8 @@ build/
 .env
 .venv/
 
-# Data stores
-lancedb_data/
+# Data stores — lancedb_data/ is committed (pre-built vectors for Vercel)
+# lancedb_data/
 
 # IDE
 .vscode/

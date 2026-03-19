@@ -1004,3 +1004,11 @@
 2026-03-17 22:14:10 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
 2026-03-17 22:14:10 | INFO     | agent.history | MongoDB connected
 2026-03-17 22:14:10 | INFO     | agent.server | All services initialized
+2026-03-19 21:39:35 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-19 21:39:35 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-19 21:39:35 | INFO     | __main__ | Existing rows: 205
+2026-03-19 21:39:35 | INFO     | __main__ | Skipping (unchanged): D&C_D&E.pdf
+2026-03-19 21:39:35 | INFO     | __main__ | Skipping (unchanged): Disclaimers.pdf
+2026-03-19 21:39:35 | INFO     | __main__ | Skipping (unchanged): INDUCED.pdf
+2026-03-19 21:39:35 | INFO     | __main__ | Skipping (unchanged): Missed_abortio.pdf
+2026-03-19 21:39:35 | INFO     | __main__ | Nothing to ingest (4 files skipped)
