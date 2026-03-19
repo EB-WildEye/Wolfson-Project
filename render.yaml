@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: gali-api
+    runtime: python
+    rootDir: Gali
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn agent.server:app --host 0.0.0.0 --port $PORT
+    plan: free
+    branch: lastVers
+    envVars:
+      - key: GEMINI_API_KEY
+        sync: false          # set manually in Render dashboard
+      - key: MONGO_URI
+        sync: false          # set manually in Render dashboard
+      - key: ENV
+        value: prod
+      - key: ALLOWED_ORIGINS
+        value: '["https://wolfson-project-beled4qikai5mzzeft8y4v.streamlit.app"]'
