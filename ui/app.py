@@ -331,13 +331,9 @@ section[data-testid="stSidebar"] *::-webkit-scrollbar {
    MOBILE / NARROW WINDOWS — cleanly compacted scaling
    ══════════════════════════════════════════════ */
 @media (max-width: 768px) {
-    /* Force sidebar to maintain a slim side-by-side footprint */
+    /* Hide the sidebar completely on mobile/tablet */
     section[data-testid="stSidebar"] {
-        position: relative !important;
-        transform: none !important;
-        width: 190px !important;
-        min-width: 190px !important;
-        box-shadow: -3px 0 12px rgba(0,0,0,0.06) !important;
+        display: none !important;
     }
     
     /* Shrink the sidebar inner content beautifully */
@@ -385,8 +381,7 @@ section[data-testid="stSidebar"] *::-webkit-scrollbar {
 /* ── Extra small (under 450px) — Ultimate shrink ── */
 @media (max-width: 450px) {
     section[data-testid="stSidebar"] {
-        width: 160px !important;
-        min-width: 160px !important;
+        display: none !important;
     }
     .gali-header h1 { font-size: 1.2rem; }
     .gali-header p { font-size: 0.6rem; }

@@ -1264,3 +1264,19 @@
 2026-03-21 20:14:18 | INFO     | agent.history | MongoDB connected
 2026-03-21 20:14:18 | INFO     | agent.server | All services initialized
 2026-03-21 20:35:01 | INFO     | agent.server | [9df50701-57b9-4b3c-a27b-d5188db74da4] GET /api/v1/history/6ba8c51d-b8fe-4303-b500-34bb91868b6e → 200 (122.7ms)
+2026-03-21 20:44:42 | INFO     | agent.server | [267b8cc8-56bf-4cf0-a89d-8a6de3c1bb9f] GET /api/v1/history/7a4a1ce5-fbc9-491b-a1b0-532f71bb0926 → 200 (775.7ms)
+2026-03-21 23:59:13 | INFO     | agent.server | Shutting down Gali API server
+2026-03-21 23:59:34 | INFO     | agent.server | Starting Gali API server...
+2026-03-21 23:59:35 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-21 23:59:35 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-22 00:00:00 | WARNING  | agent.history | MongoDB unavailable — history disabled: No replica set members found yet, Timeout: 3.0s, Topology Description: <TopologyDescription id: 69bf14c7fae88ec048b2fc21, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-3iqwnng-shard-00-00.sgolrvb.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-3iqwnng-shard-00-01.sgolrvb.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-3iqwnng-shard-00-02.sgolrvb.mongodb.net', 27017) server_type: Unknown, rtt: None>]>
+2026-03-22 00:00:00 | INFO     | agent.server | All services initialized
+2026-03-22 00:00:00 | INFO     | agent.server | [036f4dc1-3aa6-482b-aa6b-8df82cd02be5] GET /api/v1/history/05d71bc4-ebff-483b-9acb-08b904251ff4 → 200 (2.0ms)
+2026-03-22 00:00:34 | DEBUG    | agent.vectorstore | Search returned 4 results | query: איילה
+2026-03-22 00:00:48 | INFO     | agent.llm | Generated 166 chars | query: איילה
+2026-03-22 00:00:48 | INFO     | agent.server | session=05d71bc4-ebff-483b-9acb-08b904251ff4 sources=['INDUCED.pdf', 'D&C_D&E.pdf', 'Missed_abortio.pdf']
+2026-03-22 00:00:48 | INFO     | agent.server | [d0c6fd26-16a7-4773-887c-6a320966f7d0] POST /api/v1/chat → 200 (25462.4ms)
+2026-03-22 00:01:21 | DEBUG    | agent.vectorstore | Search returned 4 results | query: תני לי את כל המידע שיש לך על הפלות
+2026-03-22 00:01:47 | INFO     | agent.llm | Generated 1113 chars | query: תני לי את כל המידע שיש לך על הפלות
+2026-03-22 00:01:47 | INFO     | agent.server | session=05d71bc4-ebff-483b-9acb-08b904251ff4 sources=['INDUCED.pdf']
+2026-03-22 00:01:47 | INFO     | agent.server | [5f1ad11e-0cb3-4ade-aa47-c031b37c029e] POST /api/v1/chat → 200 (26547.8ms)
