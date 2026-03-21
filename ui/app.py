@@ -29,8 +29,26 @@ section[data-testid="stSidebar"] {
     font-family: "Material Symbols Rounded", "Material Icons", sans-serif !important;
 }
 
-/* ── Page background — warm ivory / cream ── */
-.stApp { background: #FAF5E9 !important; }
+/* ── Page background — warm light cream ── */
+.stApp {
+    background-color: #e8f2ef !important;
+    background-image:
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0.3'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23n)' opacity='0.12'/%3E%3C/svg%3E"),
+        repeating-linear-gradient(
+            135deg,
+            transparent,
+            transparent 18px,
+            rgba(0,0,0,0.018) 18px,
+            rgba(0,0,0,0.018) 19px
+        ),
+        repeating-linear-gradient(
+            45deg,
+            transparent,
+            transparent 18px,
+            rgba(255,255,255,0.03) 18px,
+            rgba(255,255,255,0.03) 19px
+        ) !important;
+}
 
 /* ── Remove all padding from the main container ── */
 .stMainBlockContainer,
@@ -57,7 +75,7 @@ section[data-testid="stSidebar"] {
     left: 0;
     right: 0;
     z-index: 999;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2), 0 2px 4px rgba(0,0,0,0.1);
 }
 .gali-header h1 {
     color: #fff;
@@ -78,7 +96,7 @@ section[data-testid="stSidebar"] {
    2. SIDEBAR — pale mint, NO border, smooth shadow
    ══════════════════════════════════════════════ */
 section[data-testid="stSidebar"] {
-    background: #dfe8e3 !important;
+    background: #c4d4ce !important;
     border: none !important;
     border-left: 1px solid rgba(71, 107, 95, 0.15) !important;
     border-right: none !important;
@@ -87,19 +105,26 @@ section[data-testid="stSidebar"] {
     top: 90px !important;
     height: calc(100vh - 90px) !important;
     z-index: 99 !important;
-    overflow: hidden !important;
+    overflow-y: auto !important;
 }
-/* Ensure the sidebar's inner body never scrolls natively */
+/* When sidebar is natively collapsed, hide our custom border/shadow to avoid ghost lines */
+section[data-testid="stSidebar"][aria-expanded="false"] {
+    box-shadow: none !important;
+    border-left: none !important;
+}
+/* Allow scrolling for chips */
 section[data-testid="stSidebar"] > div,
 section[data-testid="stSidebar"] > div > div,
 section[data-testid="stSidebar"] [data-testid="stSidebarContent"] {
-    overflow: hidden !important;
-    overflow-y: hidden !important;
+    overflow-y: auto !important;
 }
 section[data-testid="stSidebar"]::-webkit-scrollbar,
 section[data-testid="stSidebar"] *::-webkit-scrollbar {
-    display: none !important;
-    width: 0 !important;
+    width: 6px !important;
+}
+section[data-testid="stSidebar"]::-webkit-scrollbar-thumb {
+    background: rgba(71, 107, 95, 0.2) !important;
+    border-radius: 10px !important;
 }
 [data-testid="stSidebar"][aria-expanded="true"],
 [data-testid="stSidebar"] {
@@ -113,8 +138,7 @@ section[data-testid="stSidebar"] *::-webkit-scrollbar {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: calc(100vh - 160px);
-    padding: 1rem;
+    padding: 1.5rem 1rem 2rem;
 }
 .sidebar-card {
     background: #476b5f;
@@ -123,6 +147,7 @@ section[data-testid="stSidebar"] *::-webkit-scrollbar {
     text-align: center;
     color: #fff;
     width: 100%;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.28), 0 3px 10px rgba(0,0,0,0.18);
 }
 .sidebar-card .card-icon {
     font-size: 1.3rem;
@@ -151,6 +176,48 @@ section[data-testid="stSidebar"] *::-webkit-scrollbar {
     line-height: 1.6;
 }
 
+/* ── Sidebar Chips (st.button inside stSidebar) ── */
+section[data-testid="stSidebar"] [data-testid="stVerticalBlock"] {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    padding: 1.5rem 0.8rem 0 !important;
+}
+section[data-testid="stSidebar"] .stButton {
+    width: 100% !important;
+}
+section[data-testid="stSidebar"] .stButton > button {
+    background: #fff !important;
+    background-color: #fff !important;
+    border: 1.5px solid #dfe8e3 !important;
+    color: #476b5f !important;
+    border-radius: 12px !important;
+    padding: 0.6rem 0.8rem !important;
+    font-size: 0.8rem !important;
+    line-height: 1.3 !important;
+    height: auto !important;
+    min-height: 0 !important;
+    width: 100% !important;
+    word-wrap: break-word !important;
+    white-space: normal !important;
+    text-align: center !important;
+    margin-bottom: 0.1rem !important;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.22), 0 2px 6px rgba(0,0,0,0.14) !important;
+    justify-content: center !important;
+    transition: all 0.2s ease;
+}
+section[data-testid="stSidebar"] .stButton > button:hover {
+    background: #f7fbf9 !important;
+    background-color: #f7fbf9 !important;
+    border-color: #476b5f !important;
+}
+section[data-testid="stSidebar"] .stButton > button p {
+    font-size: 0.8rem !important;
+    margin: 0 !important;
+    text-align: center !important;
+    width: 100%;
+}
+
 /* ══════════════════════════════════════════════
    3. CHAT — Bubbles anchored heavily toward Sidebar 
    ══════════════════════════════════════════════ */
@@ -174,6 +241,7 @@ section[data-testid="stSidebar"] *::-webkit-scrollbar {
     word-wrap: break-word;
     overflow-wrap: break-word;
     white-space: pre-wrap;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.22), 0 2px 6px rgba(0,0,0,0.14);
 }
 
 /* AI (Gali) */
@@ -241,8 +309,7 @@ section[data-testid="stSidebar"] *::-webkit-scrollbar {
 [data-testid="stBottomBlockContainer"],
 [data-testid="stBottomBlockContainer"] > *,
 [data-testid="stBottomBlockContainer"] > * > * {
-    background: #FAF5E9 !important;
-    background-color: #FAF5E9 !important;
+    background-color: #e8f2ef !important;
     position: relative;
     z-index: 10 !important;
 }
@@ -268,14 +335,14 @@ section[data-testid="stSidebar"] *::-webkit-scrollbar {
     background-color: rgba(223, 232, 227, 0.85) !important;
     border: 1.5px solid #476b5f !important;
     border-radius: 9999px !important;
-    box-shadow: none !important;
+    box-shadow: 0 8px 28px rgba(0,0,0,0.22), 0 3px 10px rgba(0,0,0,0.14) !important;
     overflow: hidden !important;
 }
 
 .stChatInput > div:focus-within,
 [data-testid="stChatInput"] > div:focus-within {
     border-color: #3a5f50 !important;
-    box-shadow: none !important;
+    box-shadow: 0 10px 32px rgba(0,0,0,0.28), 0 4px 12px rgba(0,0,0,0.18) !important;
 }
 
 .stChatInput textarea,
@@ -351,7 +418,7 @@ section[data-testid="stSidebar"] *::-webkit-scrollbar {
     
     /* Main Chat proportionality */
     .chat-container {
-        padding: 1.5rem 0.5rem 4.5rem;
+        padding: 3.5rem 0.5rem 4.5rem;
         margin-right: 0;
         max-width: 100%;
     }
@@ -387,7 +454,7 @@ section[data-testid="stSidebar"] *::-webkit-scrollbar {
     .gali-header p { font-size: 0.6rem; }
     .header-spacer { height: 70px; }
     .msg-bubble { font-size: 0.78rem; padding: 0.5rem 0.65rem; }
-    .chat-container { padding: 1rem 0.3rem 4rem; }
+    .chat-container { padding: 3rem 0.3rem 4rem; }
 }
 </style>
 """, unsafe_allow_html=True)
@@ -428,6 +495,17 @@ if "messages" not in st.session_state:
             {"role": "assistant", "content": "היי, אני גלי, העוזרת הדיגיטלית של מחלקת נשים בוולפסון. לפני שנתחיל, מה שמך?"}
         ]
 
+SUGGESTED_PROMPTS = [
+    "מה הפרוטוקול לטיפול בהפלה?",
+    "מהם שלבי ההפלה?",
+    "מה זה D&C?",
+    "אני מרגישה תחושות קשות להכלה, מה ניתן לעשות עם זה?",
+    "מה ההנחיות למעקב אחרי הפלה?",
+    "מתי יש לפנות לחדר מיון?"
+]
+
+prompt_to_send = None
+
 # Sidebar — vertically centered green card
 with st.sidebar:
     st.markdown("""
@@ -445,6 +523,10 @@ with st.sidebar:
         </div>
     </div>
     """, unsafe_allow_html=True)
+    
+    for prompt in SUGGESTED_PROMPTS[:4]:
+        if st.button(prompt, key=f"chip_{prompt}"):
+            prompt_to_send = prompt
 
 # Chat rendering — all right-aligned (RTL: flex-start = right)
 def render_chat():
@@ -465,7 +547,10 @@ chat_area = st.empty()
 chat_area.markdown(render_chat(), unsafe_allow_html=True)
 
 if user_input := st.chat_input("כתבי כאן את השאלה..."):
-    st.session_state.messages.append({"role": "user", "content": user_input})
+    prompt_to_send = user_input
+
+if prompt_to_send:
+    st.session_state.messages.append({"role": "user", "content": prompt_to_send})
     typing = render_chat().rstrip('</div>') + (
         '<div class="msg-row assistant"><div class="msg-bubble" style="background:#476b5f;color:#fff;'
         'border-radius:18px 18px 4px 18px;">'
@@ -474,7 +559,7 @@ if user_input := st.chat_input("כתבי כאן את השאלה..."):
     )
     chat_area.markdown(typing, unsafe_allow_html=True)
     try:
-        resp = requests.post(f"{api_url}/chat", json={"query": user_input, "session_id": st.session_state.session_id}, timeout=60)
+        resp = requests.post(f"{api_url}/chat", json={"query": prompt_to_send, "session_id": st.session_state.session_id}, timeout=60)
         resp.raise_for_status()
         data = resp.json()
         answer = data["answer"]
