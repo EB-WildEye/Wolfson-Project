@@ -1080,3 +1080,187 @@
 2026-03-20 18:49:07 | INFO     | agent.server | [c411f52b-8c86-4f7c-8564-93095a96d3ef] GET /openapi.json → 200 (5.5ms)
 2026-03-20 18:49:07 | INFO     | agent.server | [e786e1a1-d3e2-4165-9bb3-9cbef8a4b9e6] GET /favicon.ico → 404 (11.3ms)
 2026-03-21 14:39:39 | INFO     | agent.server | Shutting down Gali API server
+2026-03-21 17:09:59 | INFO     | agent.server | Starting Gali API server...
+2026-03-21 17:10:00 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-21 17:10:00 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-21 17:10:05 | INFO     | agent.history | MongoDB connected
+2026-03-21 17:10:05 | INFO     | agent.server | All services initialized
+2026-03-21 17:11:14 | INFO     | agent.server | [12fd1f6d-825f-4171-8e54-62d48fe5cb38] GET /api/v1/history/25556fd2-808b-4ee9-b7ba-e2cfa3b53028 → 200 (125.5ms)
+2026-03-21 17:28:50 | DEBUG    | agent.vectorstore | Search returned 4 results | query: יעלה
+2026-03-21 17:28:57 | INFO     | agent.llm | Generated 169 chars | query: יעלה
+2026-03-21 17:28:57 | INFO     | agent.server | session=25556fd2-808b-4ee9-b7ba-e2cfa3b53028 sources=['INDUCED.pdf', 'D&C_D&E.pdf']
+2026-03-21 17:28:57 | INFO     | agent.server | [8cec884a-b1c3-41f5-86b6-cffeefc3daac] POST /api/v1/chat → 200 (7817.9ms)
+2026-03-21 18:54:31 | INFO     | agent.server | Shutting down Gali API server
+2026-03-21 18:54:52 | INFO     | agent.server | Starting Gali API server...
+2026-03-21 18:54:53 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-21 18:54:53 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-21 19:21:28 | INFO     | agent.server | Starting Gali API server...
+2026-03-21 19:21:29 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-21 19:21:29 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-21 19:21:34 | WARNING  | agent.history | MongoDB unavailable — history disabled: No replica set members found yet, Timeout: 3.0s, Topology Description: <TopologyDescription id: 69bed399b5a68437ec811f01, topology_type: ReplicaSetNoPrimary, servers: [<ServerDescription ('ac-3iqwnng-shard-00-00.sgolrvb.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-3iqwnng-shard-00-01.sgolrvb.mongodb.net', 27017) server_type: Unknown, rtt: None>, <ServerDescription ('ac-3iqwnng-shard-00-02.sgolrvb.mongodb.net', 27017) server_type: Unknown, rtt: None>]>
+2026-03-21 19:21:34 | INFO     | agent.server | All services initialized
+2026-03-21 19:21:39 | INFO     | agent.server | [990d5bb1-dd82-4493-8bc7-15b3bb18ff80] GET /api/v1/history/a6da4b9b-3f3c-4fab-9433-adec0540908f → 200 (5.2ms)
+2026-03-21 19:21:58 | DEBUG    | agent.vectorstore | Search returned 4 results | query: יעלה
+2026-03-21 19:22:05 | INFO     | agent.llm | Generated 165 chars | query: יעלה
+2026-03-21 19:22:05 | INFO     | agent.server | session=a6da4b9b-3f3c-4fab-9433-adec0540908f sources=['INDUCED.pdf', 'D&C_D&E.pdf']
+2026-03-21 19:22:05 | INFO     | agent.server | [2ff0ddf9-b776-402a-820b-a8011f7bedcf] POST /api/v1/chat → 200 (7873.1ms)
+2026-03-21 19:23:19 | DEBUG    | agent.vectorstore | Search returned 4 results | query: אני רוצה לדעת את כל המידע על הפלות שיש ב
+2026-03-21 19:23:46 | INFO     | agent.llm | Generated 1443 chars | query: אני רוצה לדעת את כל המידע על הפלות שיש ברשותך
+2026-03-21 19:23:46 | INFO     | agent.server | session=a6da4b9b-3f3c-4fab-9433-adec0540908f sources=['INDUCED.pdf', 'Missed_abortio.pdf']
+2026-03-21 19:23:46 | INFO     | agent.server | [024c5f03-90ba-43fa-b82a-d1807204b62c] POST /api/v1/chat → 200 (27454.9ms)
+2026-03-21 19:28:03 | INFO     | agent.server | [ced83564-2874-40b2-ad7b-7152ac7321c7] GET /api/v1/history/a6da4b9b-3f3c-4fab-9433-adec0540908f → 200 (2.0ms)
+2026-03-21 19:28:18 | INFO     | agent.server | Shutting down Gali API server
+2026-03-21 19:28:36 | INFO     | agent.server | Starting Gali API server...
+2026-03-21 19:28:37 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-21 19:28:37 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-21 19:28:40 | INFO     | agent.history | MongoDB connected
+2026-03-21 19:28:40 | INFO     | agent.server | All services initialized
+2026-03-21 19:28:40 | DEBUG    | agent.vectorstore | Search returned 4 results | query: לא רוצה להגיד
+2026-03-21 19:28:48 | INFO     | agent.llm | Generated 165 chars | query: לא רוצה להגיד
+2026-03-21 19:28:48 | INFO     | agent.server | session=a6da4b9b-3f3c-4fab-9433-adec0540908f sources=['Missed_abortio.pdf', 'D&C_D&E.pdf']
+2026-03-21 19:28:48 | INFO     | agent.server | [1799c81f-226f-41fa-9782-b3f5b4181ea9] POST /api/v1/chat → 200 (8005.6ms)
+2026-03-21 19:29:49 | INFO     | agent.server | Shutting down Gali API server
+2026-03-21 19:30:11 | INFO     | agent.server | Starting Gali API server...
+2026-03-21 19:30:12 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-21 19:30:12 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-21 19:30:15 | INFO     | agent.history | MongoDB connected
+2026-03-21 19:30:15 | INFO     | agent.server | All services initialized
+2026-03-21 19:30:16 | INFO     | agent.server | [54945d2e-c808-45e5-aab7-73348fd2e4b5] GET /api/v1/history/a6da4b9b-3f3c-4fab-9433-adec0540908f → 200 (122.9ms)
+2026-03-21 19:30:47 | DEBUG    | agent.vectorstore | Search returned 4 results | query: גברת פילפלת
+2026-03-21 19:30:54 | INFO     | agent.llm | Generated 33 chars | query: גברת פילפלת
+2026-03-21 19:30:54 | INFO     | agent.server | session=a6da4b9b-3f3c-4fab-9433-adec0540908f sources=['Missed_abortio.pdf', 'D&C_D&E.pdf', 'INDUCED.pdf']
+2026-03-21 19:30:54 | INFO     | agent.server | [5117ab88-feb0-4f69-9900-d1d103e96457] POST /api/v1/chat → 200 (7435.3ms)
+2026-03-21 19:32:59 | INFO     | agent.server | Shutting down Gali API server
+2026-03-21 19:33:16 | INFO     | agent.server | Starting Gali API server...
+2026-03-21 19:33:17 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-21 19:33:17 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-21 19:33:20 | INFO     | agent.history | MongoDB connected
+2026-03-21 19:33:20 | INFO     | agent.server | All services initialized
+2026-03-21 19:33:20 | INFO     | agent.server | [0de168a1-6c55-4e0f-a4c8-f64ff649c876] GET /api/v1/history/a6da4b9b-3f3c-4fab-9433-adec0540908f → 200 (121.3ms)
+2026-03-21 19:34:22 | INFO     | agent.server | [5f0e7ed4-4b2b-4cfa-b6e4-c74a39c3e5ed] GET /api/v1/history/a6da4b9b-3f3c-4fab-9433-adec0540908f → 200 (122.1ms)
+2026-03-21 19:34:34 | INFO     | agent.server | Shutting down Gali API server
+2026-03-21 19:34:53 | INFO     | agent.server | Starting Gali API server...
+2026-03-21 19:34:53 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-21 19:34:53 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-21 19:34:56 | INFO     | agent.history | MongoDB connected
+2026-03-21 19:34:56 | INFO     | agent.server | All services initialized
+2026-03-21 19:36:05 | INFO     | agent.server | Shutting down Gali API server
+2026-03-21 19:36:21 | INFO     | agent.server | Starting Gali API server...
+2026-03-21 19:36:22 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-21 19:36:22 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-21 19:36:24 | INFO     | agent.history | MongoDB connected
+2026-03-21 19:36:24 | INFO     | agent.server | All services initialized
+2026-03-21 19:36:53 | INFO     | agent.server | [29c78787-0ff6-49fe-83eb-9c0b010e5167] GET /api/v1/history/a6da4b9b-3f3c-4fab-9433-adec0540908f → 200 (128.6ms)
+2026-03-21 19:38:13 | INFO     | agent.server | [5ec00dcb-2f74-4c27-bcef-417cd4d6ac61] GET /api/v1/history/a6da4b9b-3f3c-4fab-9433-adec0540908f → 200 (126.0ms)
+2026-03-21 19:38:18 | INFO     | agent.server | Shutting down Gali API server
+2026-03-21 19:38:34 | INFO     | agent.server | Starting Gali API server...
+2026-03-21 19:38:35 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-21 19:38:35 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-21 19:38:38 | INFO     | agent.history | MongoDB connected
+2026-03-21 19:38:38 | INFO     | agent.server | All services initialized
+2026-03-21 19:40:09 | INFO     | agent.server | [a0ff6a9e-acbb-4b4f-b866-e389599da387] GET /api/v1/history/a6da4b9b-3f3c-4fab-9433-adec0540908f → 200 (129.5ms)
+2026-03-21 19:40:34 | INFO     | agent.server | Shutting down Gali API server
+2026-03-21 19:40:50 | INFO     | agent.server | Starting Gali API server...
+2026-03-21 19:40:51 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-21 19:40:51 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-21 19:40:53 | INFO     | agent.history | MongoDB connected
+2026-03-21 19:40:53 | INFO     | agent.server | All services initialized
+2026-03-21 19:42:07 | INFO     | agent.server | Shutting down Gali API server
+2026-03-21 19:42:24 | INFO     | agent.server | Starting Gali API server...
+2026-03-21 19:42:25 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-21 19:42:25 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-21 19:42:28 | INFO     | agent.history | MongoDB connected
+2026-03-21 19:42:28 | INFO     | agent.server | All services initialized
+2026-03-21 19:43:36 | INFO     | agent.server | [d0ed93eb-3668-4c23-adb3-6e842d0b2e04] GET /api/v1/history/e8c52394-397b-4703-949c-f150cfe212c7 → 200 (133.8ms)
+2026-03-21 19:44:47 | INFO     | agent.server | [780ac0a9-4af0-4f9a-99b0-c7c45bcde1d8] GET /api/v1/history/e8c52394-397b-4703-949c-f150cfe212c7 → 200 (126.9ms)
+2026-03-21 19:45:12 | INFO     | agent.server | Shutting down Gali API server
+2026-03-21 19:45:28 | INFO     | agent.server | Starting Gali API server...
+2026-03-21 19:45:29 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-21 19:45:29 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-21 19:45:32 | INFO     | agent.history | MongoDB connected
+2026-03-21 19:45:32 | INFO     | agent.server | All services initialized
+2026-03-21 19:46:24 | INFO     | agent.server | [5a9662b5-6779-42a3-9acf-5cdcfadd60c1] GET /api/v1/history/e8c52394-397b-4703-949c-f150cfe212c7 → 200 (146.9ms)
+2026-03-21 19:46:46 | INFO     | agent.server | Shutting down Gali API server
+2026-03-21 19:47:05 | INFO     | agent.server | Starting Gali API server...
+2026-03-21 19:47:06 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-21 19:47:06 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-21 19:47:08 | INFO     | agent.history | MongoDB connected
+2026-03-21 19:47:08 | INFO     | agent.server | All services initialized
+2026-03-21 19:47:09 | INFO     | agent.server | [acb2b70d-833e-45c3-aa93-5b4be7649e66] GET /api/v1/history/e8c52394-397b-4703-949c-f150cfe212c7 → 200 (139.5ms)
+2026-03-21 19:49:41 | INFO     | agent.server | Shutting down Gali API server
+2026-03-21 19:49:58 | INFO     | agent.server | Starting Gali API server...
+2026-03-21 19:49:59 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-21 19:49:59 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-21 19:50:02 | INFO     | agent.history | MongoDB connected
+2026-03-21 19:50:02 | INFO     | agent.server | All services initialized
+2026-03-21 19:50:02 | INFO     | agent.server | [8e1035e0-b95a-4181-8e4d-a20675bf386d] GET /api/v1/history/e8c52394-397b-4703-949c-f150cfe212c7 → 200 (125.1ms)
+2026-03-21 19:50:27 | INFO     | agent.server | [95488a7e-5263-4262-b5f4-defd93b5d389] GET /api/v1/history/91cd2600-03d4-408d-8d50-54d48735abf2 → 200 (122.7ms)
+2026-03-21 19:51:57 | INFO     | agent.server | Shutting down Gali API server
+2026-03-21 19:52:13 | INFO     | agent.server | Starting Gali API server...
+2026-03-21 19:52:14 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-21 19:52:14 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-21 19:52:17 | INFO     | agent.history | MongoDB connected
+2026-03-21 19:52:17 | INFO     | agent.server | All services initialized
+2026-03-21 19:55:28 | INFO     | agent.server | [3d21a184-e479-4adf-b23e-4b84daa6a602] GET /api/v1/history/91cd2600-03d4-408d-8d50-54d48735abf2 → 200 (118.5ms)
+2026-03-21 19:55:50 | INFO     | agent.server | [258f083d-6ab1-4523-8552-d902333b4efa] GET /api/v1/history/3032eb7b-978d-411e-8a65-8cde7964809b → 200 (122.6ms)
+2026-03-21 19:58:18 | INFO     | agent.server | [337ba381-8115-4a00-8b39-6db685ecec19] GET /api/v1/history/3032eb7b-978d-411e-8a65-8cde7964809b → 200 (126.5ms)
+2026-03-21 19:58:36 | INFO     | agent.server | Shutting down Gali API server
+2026-03-21 19:58:53 | INFO     | agent.server | Starting Gali API server...
+2026-03-21 19:58:53 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-21 19:58:54 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-21 19:58:56 | INFO     | agent.history | MongoDB connected
+2026-03-21 19:58:56 | INFO     | agent.server | All services initialized
+2026-03-21 20:00:10 | INFO     | agent.server | Shutting down Gali API server
+2026-03-21 20:00:27 | INFO     | agent.server | Starting Gali API server...
+2026-03-21 20:00:28 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-21 20:00:28 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-21 20:00:32 | INFO     | agent.history | MongoDB connected
+2026-03-21 20:00:32 | INFO     | agent.server | All services initialized
+2026-03-21 20:00:32 | INFO     | agent.server | [61e0d588-49f3-4439-9615-dcb9918fd4ff] GET /api/v1/history/3032eb7b-978d-411e-8a65-8cde7964809b → 200 (125.9ms)
+2026-03-21 20:00:47 | INFO     | agent.server | [b62bdabd-a736-4e82-ac74-56edc04699d5] GET /api/v1/history/5ae8fc55-744a-4739-b5b0-2a9e6661b609 → 200 (117.3ms)
+2026-03-21 20:01:38 | INFO     | agent.server | [11183c58-c012-4176-8a27-ffb022b545a3] GET /api/v1/history/29280cf9-ca65-476e-8d1e-e0df304401be → 200 (119.4ms)
+2026-03-21 20:02:06 | DEBUG    | agent.vectorstore | Search returned 4 results | query: רוחמה
+2026-03-21 20:02:14 | WARNING  | agent.llm | Gemini transient error (attempt 1/3), retrying in 2s: 503 UNAVAILABLE. {'error': {'code': 503, 'message': 'This model is currently experiencing high demand. Spikes in demand 
+2026-03-21 20:02:31 | INFO     | agent.llm | Generated 297 chars | query: רוחמה
+2026-03-21 20:02:31 | INFO     | agent.server | session=29280cf9-ca65-476e-8d1e-e0df304401be sources=['Missed_abortio.pdf', 'D&C_D&E.pdf']
+2026-03-21 20:02:31 | INFO     | agent.server | [0c5009ac-c957-4326-94e9-77b4eb01f69e] POST /api/v1/chat → 200 (26186.3ms)
+2026-03-21 20:02:54 | DEBUG    | agent.vectorstore | Search returned 4 results | query: מה יש פה טעות.. לא שאלתי מה השאלה, אמרתי
+2026-03-21 20:03:02 | INFO     | agent.llm | Generated 47 chars | query: מה יש פה טעות.. לא שאלתי מה השאלה, אמרתי שקוראים ל
+2026-03-21 20:03:02 | INFO     | agent.server | session=29280cf9-ca65-476e-8d1e-e0df304401be sources=['Missed_abortio.pdf', 'D&C_D&E.pdf']
+2026-03-21 20:03:02 | INFO     | agent.server | [858cff7c-fe5c-47e0-8cb1-a16f1c5a12e5] POST /api/v1/chat → 200 (8058.2ms)
+2026-03-21 20:04:48 | INFO     | agent.server | Shutting down Gali API server
+2026-03-21 20:05:08 | INFO     | agent.server | Starting Gali API server...
+2026-03-21 20:05:09 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-21 20:05:09 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-21 20:05:12 | INFO     | agent.history | MongoDB connected
+2026-03-21 20:05:12 | INFO     | agent.server | All services initialized
+2026-03-21 20:05:12 | INFO     | agent.server | [f4930687-da28-4e79-a65f-58a4cc321488] GET /api/v1/history/29280cf9-ca65-476e-8d1e-e0df304401be → 200 (247.6ms)
+2026-03-21 20:05:12 | INFO     | agent.server | [95ca89e5-99fe-4768-ada4-5071a1dd33b3] GET /api/v1/history/7a4a1ce5-fbc9-491b-a1b0-532f71bb0926 → 200 (248.1ms)
+2026-03-21 20:06:54 | INFO     | agent.server | [9f9f7ed9-6450-4c8c-a9fc-b6662ff4a88c] GET /api/v1/history/7a4a1ce5-fbc9-491b-a1b0-532f71bb0926 → 200 (119.4ms)
+2026-03-21 20:07:12 | INFO     | agent.server | Shutting down Gali API server
+2026-03-21 20:07:30 | INFO     | agent.server | Starting Gali API server...
+2026-03-21 20:07:30 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-21 20:07:30 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-21 20:07:33 | INFO     | agent.history | MongoDB connected
+2026-03-21 20:07:33 | INFO     | agent.server | All services initialized
+2026-03-21 20:08:45 | INFO     | agent.server | [5c7402c5-0099-42d8-ae1c-b9d5df4facef] GET /api/v1/history/7a4a1ce5-fbc9-491b-a1b0-532f71bb0926 → 200 (127.1ms)
+2026-03-21 20:09:03 | INFO     | agent.server | [bc8045b8-808e-4f60-82d3-c0a742c62ce3] GET /api/v1/history/6f35fc61-ae0c-4a43-a937-14ad5f6fa2f8 → 200 (126.7ms)
+2026-03-21 20:11:46 | INFO     | agent.server | Shutting down Gali API server
+2026-03-21 20:12:06 | INFO     | agent.server | Starting Gali API server...
+2026-03-21 20:12:07 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-21 20:12:07 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-21 20:12:11 | INFO     | agent.history | MongoDB connected
+2026-03-21 20:12:11 | INFO     | agent.server | All services initialized
+2026-03-21 20:12:54 | INFO     | agent.server | Shutting down Gali API server
+2026-03-21 20:13:13 | INFO     | agent.server | Starting Gali API server...
+2026-03-21 20:13:14 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-21 20:13:14 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-21 20:13:17 | INFO     | agent.history | MongoDB connected
+2026-03-21 20:13:17 | INFO     | agent.server | All services initialized
+2026-03-21 20:13:57 | INFO     | agent.server | Shutting down Gali API server
+2026-03-21 20:14:15 | INFO     | agent.server | Starting Gali API server...
+2026-03-21 20:14:16 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-21 20:14:16 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-21 20:14:18 | INFO     | agent.history | MongoDB connected
+2026-03-21 20:14:18 | INFO     | agent.server | All services initialized
+2026-03-21 20:35:01 | INFO     | agent.server | [9df50701-57b9-4b3c-a27b-d5188db74da4] GET /api/v1/history/6ba8c51d-b8fe-4303-b500-34bb91868b6e → 200 (122.7ms)
