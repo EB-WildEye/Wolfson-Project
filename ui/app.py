@@ -1,9 +1,7 @@
 import streamlit as st
 import requests
 import uuid
-import markdown
 import os
-
 
 api_url = os.getenv("API_URL", "http://localhost:8000/api/v1")
 
@@ -13,33 +11,38 @@ st.markdown("""
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700&display=swap');
 
-/* ── Global ── */
+/* ── Global RTL & Fonts ── */
 html, body, [class*="css"], .stApp, .stMarkdown,
-section[data-testid="stSidebar"] {
+[data-testid="stSidebar"], [data-testid="stChatMessageContent"] {
     direction: rtl !important;
     text-align: right !important;
     font-family: 'Assistant', sans-serif !important;
 }
 
-/* ── Page background ── */
 .stApp { background: #faf8f6 !important; }
 
-/* ── Remove all padding on the main container ── */
+/* ── Remove Default Main Padding ── */
 .stMainBlockContainer,
 [data-testid="stMainBlockContainer"] {
     padding-top: 0 !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-    max-width: 100% !important;
+    max-width: 900px !important;
+    margin: 0 auto !important;
+    padding-bottom: 6rem !important;
 }
-[data-testid="stAppViewBlockContainer"] {
-    padding-top: 0 !important;
-}
+[data-testid="stAppViewBlockContainer"] { padding-top: 0 !important; }
 
-/* ── Sidebar ── */
+/* ── Sidebar (Force Native to Right) ── */
 section[data-testid="stSidebar"] {
     background: #f0ecf4 !important;
-    border-left: 1px solid #e2dce8 !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-inline-start: 1px solid #e2dce8 !important;
+}
+[data-testid="stSidebar"][aria-expanded="true"],
+[data-testid="stSidebar"] {
+    direction: rtl !important;
+    right: 0 !important;
+    left: auto !important;
 }
 section[data-testid="stSidebar"] .stMarkdown p,
 section[data-testid="stSidebar"] .stMarkdown li,
@@ -56,7 +59,7 @@ section[data-testid="stSidebar"] .stMarkdown h3 {
 }
 section[data-testid="stSidebar"] hr { border-color: #e2dce8 !important; }
 
-/* ── Header (full-width) ── */
+/* ── Header (Full-width) ── */
 .gali-header {
     background: #5b7e72;
     padding: 1.3rem 1rem;
@@ -67,6 +70,7 @@ section[data-testid="stSidebar"] hr { border-color: #e2dce8 !important; }
     right: 50%;
     margin-left: -50vw;
     margin-right: -50vw;
+    margin-bottom: 2rem;
 }
 .gali-header h1 {
     color: #fff;
@@ -82,77 +86,27 @@ section[data-testid="stSidebar"] hr { border-color: #e2dce8 !important; }
     margin-top: 0.15rem;
 }
 
-/* ── Chat ── */
-.chat-container {
-    max-width: 660px;
-    margin: 0 auto;
-    padding: 1.5rem 1rem 6rem;
+/* ── Streamlit Chat Message Native RTL Alignments ── */
+[data-testid="stChatMessage"] {
+    direction: rtl !important;
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 1rem !important;
 }
-.msg-row { display: flex; margin-bottom: 0.6rem; }
-.msg-row.assistant { justify-content: flex-start; }
-.msg-row.user { justify-content: flex-end; }
-.msg-bubble {
-    max-width: 80%;
-    padding: 0.75rem 1.1rem;
-    font-size: 0.92rem;
-    line-height: 1.75;
-    border-radius: 18px;
-    color: #3e3540;
-}
-.msg-row.assistant .msg-bubble {
-    background: #fff;
-    border: 1px solid #e6e1ea;
-}
-.msg-row.user .msg-bubble {
-    background: #eae4ef;
-    border: 1px solid #ddd6e4;
-}
-.msg-source {
+
+/* ── Custom Sources Badge ── */
+.native-source {
     display: inline-block;
-    margin-top: 0.45rem;
+    margin-top: 0.8rem;
     font-size: 0.75rem;
     color: #5b7e72;
     background: rgba(91,126,114,0.07);
     border: 1px solid rgba(91,126,114,0.18);
     border-radius: 6px;
-    padding: 0.1rem 0.45rem;
+    padding: 0.2rem 0.6rem;
 }
 
-/* ── Links inside chat bubbles ── */
-.msg-row.assistant .msg-bubble a {
-    color: #5b7e72 !important;
-    font-weight: 600;
-    text-decoration: underline;
-}
-.msg-row.assistant .msg-bubble a:hover {
-    color: #476b5f !important;
-}
-.msg-row.user .msg-bubble a {
-    color: #3e0254 !important;
-    font-weight: 600;
-    text-decoration: underline;
-}
-.msg-row.user .msg-bubble a:hover {
-    color: #2a013a !important;
-}
-
-/* ── Typing dots ── */
-.typing-dot {
-    display: inline-block;
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: #99ada7;
-    margin: 0 2px;
-    animation: tp 1.2s infinite;
-}
-.typing-dot:nth-child(2) { animation-delay: 0.2s; }
-.typing-dot:nth-child(3) { animation-delay: 0.4s; }
-@keyframes tp {
-    0%,60%,100% { opacity: 0.3; }
-    30% { opacity: 1; }
-}
-
-/* ── Input bar ── */
+/* ── Input Bar ── */
 [data-testid="stBottom"],
 [data-testid="stBottom"] > *,
 [data-testid="stBottom"] > * > *,
@@ -180,18 +134,14 @@ section[data-testid="stSidebar"] hr { border-color: #e2dce8 !important; }
 .stChatInput > div,
 [data-testid="stChatInput"] > div {
     background: #ffffff !important;
-    background-color: #ffffff !important;
     border: 1px solid #ddd6e4 !important;
     border-radius: 18px !important;
     box-shadow: none !important;
 }
-
 .stChatInput > div:focus-within,
 [data-testid="stChatInput"] > div:focus-within {
     border-color: #a48db8 !important;
-    box-shadow: none !important;
 }
-
 .stChatInput textarea,
 [data-testid="stChatInput"] textarea {
     direction: rtl !important;
@@ -199,35 +149,7 @@ section[data-testid="stSidebar"] hr { border-color: #e2dce8 !important; }
     font-family: 'Assistant', sans-serif !important;
     font-size: 0.92rem !important;
     color: #3e3540 !important;
-    background: transparent !important;
-    background-color: transparent !important;
 }
-.stChatInput textarea::placeholder,
-[data-testid="stChatInput"] textarea::placeholder {
-    color: #c0b5ca !important;
-}
-
-.stChatInput button,
-[data-testid="stChatInput"] button {
-    background: #a48db8 !important;
-    background-color: #a48db8 !important;
-    border-radius: 50% !important;
-    color: #fff !important;
-    border: none !important;
-}
-.stChatInput button:hover,
-[data-testid="stChatInput"] button:hover {
-    background: #957da9 !important;
-    background-color: #957da9 !important;
-}
-.stChatInput button svg,
-[data-testid="stChatInput"] button svg {
-    fill: #fff !important;
-    stroke: #fff !important;
-}
-
-/* ── Spinner ── */
-.stSpinner > div { color: #99ada7 !important; }
 
 /* ── Disclaimer ── */
 .disclaimer {
@@ -242,20 +164,29 @@ section[data-testid="stSidebar"] hr { border-color: #e2dce8 !important; }
     margin-top: 1rem;
 }
 
-/* ── Hide Streamlit chrome ── */
-#MainMenu, footer, header { visibility: hidden; }
-[data-testid="stChatMessage"] {
-    height: 0 !important;
-    overflow: hidden !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    border: none !important;
-    min-height: 0 !important;
+/* Hide chrome */
+#MainMenu, header { visibility: hidden; }
+
+/* ══════════════════════════════════════════════
+   MOBILE RESPONSIVE
+   ══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+    section[data-testid="stSidebar"] {
+        min-width: 0 !important;
+        width: 260px !important;
+        transform: translateX(100%) !important;
+        transition: transform 0.3s ease !important;
+    }
+    section[data-testid="stSidebar"][aria-expanded="true"] {
+        transform: translateX(0) !important;
+    }
+    .gali-header { padding: 1rem 0.75rem; }
+    .gali-header h1 { font-size: 1.4rem; }
 }
 </style>
 """, unsafe_allow_html=True)
 
-# Header section
+# Main Header
 st.markdown("""
 <div class="gali-header">
     <h1>גלי</h1>
@@ -263,7 +194,7 @@ st.markdown("""
 </div>
 """, unsafe_allow_html=True)
 
-# Session state management
+# State init
 query_params = st.query_params
 param_session = query_params.get("session", None)
 
@@ -275,7 +206,6 @@ if "session_id" not in st.session_state:
         st.query_params["session"] = st.session_state.session_id
 
 if "messages" not in st.session_state:
-    # Load previous chat history from the API
     loaded = []
     try:
         resp = requests.get(f"{api_url}/history/{st.session_state.session_id}", timeout=10)
@@ -291,50 +221,50 @@ if "messages" not in st.session_state:
             {"role": "assistant", "content": "היי, אני גלי, העוזרת הדיגיטלית של מחלקת נשים בוולפסון. לפני שנתחיל, מה שמך?"}
         ]
 
-# Sidebar content
+# Sidebar
 with st.sidebar:
     st.markdown("### אודות")
     st.markdown("**גלי** עונה על שאלות מתוך פרוטוקולים, הנחיות ומסמכים רפואיים של המחלקה.")
     st.markdown("---")
     st.markdown('<div class="disclaimer">גלי היא עוזרת AI ואינה מחליפה ייעוץ רפואי מקצועי. יש להתייעץ תמיד עם רופא/ה.</div>', unsafe_allow_html=True)
 
-# Chat rendering function
-def render_chat():
-    parts = ['<div class="chat-container">']
-    for msg in st.session_state.messages:
-        role = msg["role"]
+# Render Chat Output natively
+for msg in st.session_state.messages:
+    with st.chat_message(msg["role"]):
         content = msg["content"]
-        if role == "assistant" and "\n\nמקורות:" in content:
+        if msg["role"] == "assistant" and "\n\nמקורות:" in content:
             text_part, src = content.split("\n\nמקורות:", 1)
-            html = markdown.markdown(text_part) + f'<span class="msg-source">{src.strip()}</span>'
+            st.markdown(text_part)
+            st.markdown(f'<span class="native-source">{src.strip()}</span>', unsafe_allow_html=True)
         else:
-            html = markdown.markdown(content)
-        parts.append(f'<div class="msg-row {role}"><div class="msg-bubble">{html}</div></div>')
-    parts.append('</div>')
-    return "\n".join(parts)
+            st.markdown(content)
 
-# Display chat area
-chat_area = st.empty()
-chat_area.markdown(render_chat(), unsafe_allow_html=True)
-
-# Handle user input
+# Handle user input via native chat_input
 if user_input := st.chat_input("כתבי כאן את השאלה..."):
     st.session_state.messages.append({"role": "user", "content": user_input})
-    typing = render_chat().rstrip('</div>') + (
-        '<div class="msg-row assistant"><div class="msg-bubble">'
-        '<span class="typing-dot"></span><span class="typing-dot"></span>'
-        '<span class="typing-dot"></span></div></div></div>'
-    )
-    chat_area.markdown(typing, unsafe_allow_html=True)
-    try:
-        resp = requests.post(f"{api_url}/chat", json={"query": user_input, "session_id": st.session_state.session_id}, timeout=60)
-        resp.raise_for_status()
-        data = resp.json()
-        answer = data["answer"]
-        sources = data.get("sources", [])
-        if sources:
-            answer += f"\n\nמקורות: {', '.join(sources)}"
-    except Exception as e:
-        answer = f"שגיאה בחיבור לשרת: {e}"
+    with st.chat_message("user"):
+        st.markdown(user_input)
+
+    with st.chat_message("assistant"):
+        with st.spinner("גלי מקלידה..."):
+            try:
+                resp = requests.post(
+                    f"{api_url}/chat", 
+                    json={"query": user_input, "session_id": st.session_state.session_id}, 
+                    timeout=60
+                )
+                resp.raise_for_status()
+                data = resp.json()
+                answer = data["answer"]
+                sources = data.get("sources", [])
+                
+                st.markdown(answer)
+                if sources:
+                    sources_str = ', '.join(sources)
+                    st.markdown(f'<span class="native-source">{sources_str}</span>', unsafe_allow_html=True)
+                    answer += f"\n\nמקורות: {sources_str}"
+            except Exception as e:
+                answer = f"שגיאה בחיבור לשרת: {e}"
+                st.error(answer)
+                
     st.session_state.messages.append({"role": "assistant", "content": answer})
-    chat_area.markdown(render_chat(), unsafe_allow_html=True)

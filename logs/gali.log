@@ -1012,3 +1012,71 @@
 2026-03-19 21:39:35 | INFO     | __main__ | Skipping (unchanged): INDUCED.pdf
 2026-03-19 21:39:35 | INFO     | __main__ | Skipping (unchanged): Missed_abortio.pdf
 2026-03-19 21:39:35 | INFO     | __main__ | Nothing to ingest (4 files skipped)
+2026-03-20 18:11:46 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-20 18:11:46 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-20 18:11:46 | INFO     | __main__ | Existing rows: 205
+2026-03-20 18:11:46 | INFO     | __main__ | Skipping (unchanged): D&C_D&E.pdf
+2026-03-20 18:11:46 | INFO     | __main__ | Skipping (unchanged): Disclaimers.pdf
+2026-03-20 18:11:46 | INFO     | __main__ | Skipping (unchanged): INDUCED.pdf
+2026-03-20 18:11:46 | INFO     | __main__ | Skipping (unchanged): Missed_abortio.pdf
+2026-03-20 18:11:46 | INFO     | __main__ | Nothing to ingest (4 files skipped)
+2026-03-20 18:12:40 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-20 18:12:40 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-20 18:12:40 | WARNING  | agent.vectorstore | Dropped table 'documents'
+2026-03-20 18:12:40 | WARNING  | __main__ | Hash cache cleared
+2026-03-20 18:12:40 | INFO     | __main__ | Existing rows: 0
+2026-03-20 18:12:40 | INFO     | __main__ | Processing: D&C_D&E.pdf
+2026-03-20 18:12:44 | INFO     | __main__ |   → 51 chunks from 30207 chars
+2026-03-20 18:12:44 | INFO     | __main__ | Processing: Disclaimers.pdf
+2026-03-20 18:12:44 | INFO     | __main__ |   → 4 chunks from 2386 chars
+2026-03-20 18:12:44 | INFO     | __main__ | Processing: INDUCED.pdf
+2026-03-20 18:12:50 | INFO     | __main__ |   → 88 chunks from 52732 chars
+2026-03-20 18:12:50 | INFO     | __main__ | Processing: Missed_abortio.pdf
+2026-03-20 18:12:53 | INFO     | __main__ |   → 62 chunks from 36782 chars
+2026-03-20 18:12:53 | INFO     | __main__ | Embedding 205 chunks...
+2026-03-20 18:12:57 | INFO     | __main__ |   Embedded 10/205
+2026-03-20 18:13:00 | INFO     | __main__ |   Embedded 20/205
+2026-03-20 18:13:03 | INFO     | __main__ |   Embedded 30/205
+2026-03-20 18:13:06 | INFO     | __main__ |   Embedded 40/205
+2026-03-20 18:13:09 | INFO     | __main__ |   Embedded 50/205
+2026-03-20 18:13:13 | INFO     | __main__ |   Embedded 60/205
+2026-03-20 18:13:16 | INFO     | __main__ |   Embedded 70/205
+2026-03-20 18:13:19 | INFO     | __main__ |   Embedded 80/205
+2026-03-20 18:13:22 | INFO     | __main__ |   Embedded 90/205
+2026-03-20 18:13:25 | INFO     | __main__ |   Embedded 100/205
+2026-03-20 18:13:28 | INFO     | __main__ |   Embedded 110/205
+2026-03-20 18:13:31 | INFO     | __main__ |   Embedded 120/205
+2026-03-20 18:13:34 | INFO     | __main__ |   Embedded 130/205
+2026-03-20 18:13:37 | INFO     | __main__ |   Embedded 140/205
+2026-03-20 18:13:40 | INFO     | __main__ |   Embedded 150/205
+2026-03-20 18:13:43 | INFO     | __main__ |   Embedded 160/205
+2026-03-20 18:13:46 | INFO     | __main__ |   Embedded 170/205
+2026-03-20 18:13:49 | INFO     | __main__ |   Embedded 180/205
+2026-03-20 18:13:52 | INFO     | __main__ |   Embedded 190/205
+2026-03-20 18:13:55 | INFO     | __main__ |   Embedded 200/205
+2026-03-20 18:13:57 | INFO     | agent.vectorstore | Stored 205 chunks in 'documents'
+2026-03-20 18:13:57 | INFO     | __main__ | Done | 205 chunks stored | 0 skipped | 76.3s
+2026-03-20 18:19:03 | INFO     | agent.server | Starting Gali API server...
+2026-03-20 18:19:04 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-20 18:19:04 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-20 18:19:08 | INFO     | agent.history | MongoDB connected
+2026-03-20 18:19:08 | INFO     | agent.server | All services initialized
+2026-03-20 18:20:40 | INFO     | agent.server | [eb7b2bda-10a9-4e7c-b1f1-e2a7eb34cdb1] GET /api/v1/history/ece7e1ae-ffc3-493b-973e-b3e48461be56 → 200 (126.6ms)
+2026-03-20 18:20:50 | INFO     | agent.server | [bc719e68-f750-4d07-882e-0d55238768c0] GET /api/v1/history/f2a74eea-21a0-4ff0-9cd2-32d027c4a099 → 200 (119.8ms)
+2026-03-20 18:22:06 | INFO     | agent.server | [413da222-fc11-4b9a-856a-b5e10751c33d] GET /docs → 200 (0.8ms)
+2026-03-20 18:22:06 | INFO     | agent.server | [312e6f65-ac87-48d3-8c79-99975386503c] GET /openapi.json → 200 (28.4ms)
+2026-03-20 18:22:29 | DEBUG    | agent.vectorstore | Search returned 4 results | query: string
+2026-03-20 18:22:55 | INFO     | agent.llm | Generated 311 chars | query: string
+2026-03-20 18:22:55 | INFO     | agent.server | session=default sources=['INDUCED.pdf', 'D&C_D&E.pdf', 'Missed_abortio.pdf']
+2026-03-20 18:22:55 | INFO     | agent.server | [7ab15e35-68da-49fb-bed8-39674ce98b6b] POST /api/v1/chat → 200 (26630.0ms)
+2026-03-20 18:30:09 | DEBUG    | agent.vectorstore | Search returned 4 results | query: string
+2026-03-20 18:30:21 | INFO     | agent.llm | Generated 165 chars | query: string
+2026-03-20 18:30:21 | INFO     | agent.server | session=default sources=['INDUCED.pdf', 'D&C_D&E.pdf', 'Missed_abortio.pdf']
+2026-03-20 18:30:21 | INFO     | agent.server | [cda5b659-9e8e-4246-be8d-f78ba88c6ca7] POST /api/v1/chat → 200 (11996.2ms)
+2026-03-20 18:37:35 | DEBUG    | agent.vectorstore | Search returned 4 results | query: string
+2026-03-20 18:37:51 | INFO     | agent.llm | Generated 165 chars | query: string
+2026-03-20 18:37:51 | INFO     | agent.server | session=default sources=['INDUCED.pdf', 'D&C_D&E.pdf', 'Missed_abortio.pdf']
+2026-03-20 18:37:51 | INFO     | agent.server | [e8f22785-49f6-4e9e-ac72-cfde6b9c4873] POST /api/v1/chat → 200 (16916.6ms)
+2026-03-20 18:49:07 | INFO     | agent.server | [c411f52b-8c86-4f7c-8564-93095a96d3ef] GET /openapi.json → 200 (5.5ms)
+2026-03-20 18:49:07 | INFO     | agent.server | [e786e1a1-d3e2-4165-9bb3-9cbef8a4b9e6] GET /favicon.ico → 404 (11.3ms)
+2026-03-21 14:39:39 | INFO     | agent.server | Shutting down Gali API server
