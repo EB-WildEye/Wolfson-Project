@@ -1398,3 +1398,15 @@
 2026-03-22 00:51:02 | INFO     | agent.history | MongoDB connected
 2026-03-22 00:51:02 | INFO     | agent.server | All services initialized
 2026-03-22 00:51:02 | INFO     | agent.server | [5b1bac2a-bc20-410e-9624-137bfb90be11] GET /api/v1/history/f873f8c2-52e6-42ec-8c4b-82b067357afa → 200 (127.2ms)
+2026-03-22 11:13:38 | INFO     | agent.server | Shutting down Gali API server
+2026-03-22 11:14:25 | INFO     | agent.server | Starting Gali API server...
+2026-03-22 11:14:26 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-22 11:14:26 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-22 11:14:31 | INFO     | agent.history | MongoDB connected
+2026-03-22 11:14:31 | INFO     | agent.server | All services initialized
+2026-03-22 11:20:25 | INFO     | agent.server | Shutting down Gali API server
+2026-03-22 11:20:41 | INFO     | agent.server | Starting Gali API server...
+2026-03-22 11:20:42 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-03-22 11:20:42 | INFO     | agent.vectorstore | LanceDB connected | path=lancedb_data
+2026-03-22 11:20:45 | INFO     | agent.history | MongoDB connected
+2026-03-22 11:20:45 | INFO     | agent.server | All services initialized
