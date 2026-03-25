@@ -534,11 +534,7 @@ def render_chat():
     for msg in st.session_state.messages:
         role = msg["role"]
         content = msg["content"]
-        if role == "assistant" and "\n\nמקורות:" in content:
-            text_part, src = content.split("\n\nמקורות:", 1)
-            html = markdown.markdown(text_part) + f'<span class="msg-source">{src.strip()}</span>'
-        else:
-            html = markdown.markdown(content)
+        html = markdown.markdown(content)
         parts.append(f'<div class="msg-row {role}"><div class="msg-bubble">{html}</div></div>')
     parts.append('</div>')
     return "\n".join(parts)
@@ -563,9 +559,6 @@ if prompt_to_send:
         resp.raise_for_status()
         data = resp.json()
         answer = data["answer"]
-        sources = data.get("sources", [])
-        if sources:
-            answer += f"\n\nמקורות: {', '.join(sources)}"
     except Exception as e:
         answer = f"שגיאה בחיבור לשרת: {e}"
     st.session_state.messages.append({"role": "assistant", "content": answer})

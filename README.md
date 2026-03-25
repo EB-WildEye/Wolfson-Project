@@ -170,6 +170,24 @@ uv run python -m ingestion.main --purge  # full rebuild
 
 ---
 
+## Running Tests
+
+Make sure the backend is running first (Terminal 2 above), then:
+
+**Windows (PowerShell / CMD):**
+```bash
+uv run pytest tests/test_rag.py -v
+```
+
+**WSL:**
+```bash
+pip install pytest requests && python -m pytest tests/test_rag.py -v
+```
+
+The tests send real questions to the API and verify the answers contain expected terms from the source PDFs. A passing test suite confirms the RAG system is working end-to-end.
+
+---
+
 ## ⚠️ Disclaimer
 
 Gali is an AI assistant and does **NOT** replace professional medical advice.

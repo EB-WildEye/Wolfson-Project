@@ -17,7 +17,7 @@ class VectorStore:
         log.info(f"LanceDB connected | path={settings.LANCEDB_PATH}")
 
 
-    def search_similar(self, query: str, top_k: int = 4) -> list[dict]:
+    def search_similar(self, query: str, top_k: int = 8) -> list[dict]:
         """Embed query and return top-k similar chunks."""
         table = self._db.open_table(settings.LANCEDB_TABLE)
         results = table.search(self._llm.embed_text(query)).limit(top_k).to_list()
@@ -25,10 +25,10 @@ class VectorStore:
         return results
 
 
-    def store_chunks(self, chunks: list[dict]):
-        """Create/overwrite the documents table with new chunks."""
-        self._db.create_table(settings.LANCEDB_TABLE, chunks, mode="overwrite")
-        log.info(f"Stored {len(chunks)} chunks in '{settings.LANCEDB_TABLE}'")
+    def store_chunks(self, chunks: list[dict], mode: str = "overwrite"):
+        """Create or append chunks to the documents table."""
+        self._db.create_table(settings.LANCEDB_TABLE, chunks, mode=mode)
+        log.info(f"Stored {len(chunks)} chunks in '{settings.LANCEDB_TABLE}' (mode={mode})")
 
 
     def drop_table(self):

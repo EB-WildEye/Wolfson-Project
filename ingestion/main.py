@@ -94,7 +94,8 @@ class Ingestor:
             if (i + 1) % 10 == 0:
                 log.info(f"  Embedded {i+1}/{len(chunks)}")
 
-        self._store.store_chunks(chunks)
+        store_mode = "overwrite" if (drop or purge) else "append"
+        self._store.store_chunks(chunks, mode=store_mode)
         self._save_hash_cache()
 
         elapsed = round(time.perf_counter() - t_start, 1)
