@@ -30,13 +30,20 @@ class GeminiClient:
         return result.embeddings[0].values
 
 
-    def generate_answer(self, query: str, context: str, history: list[dict] | None = None) -> str:
+    def generate_answer(
+        self,
+        query: str,
+        context: str,
+        history: list[dict] | None = None,
+        show_default_disclaimer: bool = False,
+    ) -> str:
         """Generate a RAG answer using Gemini's native multi-turn chat.
 
         Args:
-            query:   The user's current question.
-            context: Retrieved RAG context to ground the answer.
-            history: List of past messages as {"role": "user"|"model", "parts": [{"text": ...}]}.
+            query:                    The user's current question.
+            context:                  Retrieved RAG context to ground the answer.
+            history:                  List of past messages as {"role": "user"|"model", "parts": [{"text": ...}]}.
+            show_default_disclaimer:  If True, instructs the LLM to append the default disclaimer.
 
         Returns:
             The model's text response.
@@ -59,7 +66,8 @@ class GeminiClient:
         )
 
         # Inject RAG context into the user message
-        message = f"Context:\n{context}\n\nQuestion: {query}"
+        disclaimer_tag = "\n\n[SHOW_DEFAULT_DISCLAIMER]" if show_default_disclaimer else ""
+        message = f"Context:\n{context}\n\nQuestion: {query}{disclaimer_tag}"
 
         # Retry with exponential backoff on transient errors
         for attempt in range(1, MAX_RETRIES + 1):

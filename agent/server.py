@@ -173,8 +173,13 @@ async def handle_chat_message(req: ChatRequest):
     sources = list({r.get("source", "unknown") for r in results})
     chat_history = history.get_chat_history(req.session_id)
 
+    # Show the default disclaimer only on the 2nd LLM response:
+    # exactly 1 prior "model" message means this is response #2.
+    prior_assistant_count = sum(1 for m in chat_history if m["role"] == "model")
+    show_disclaimer = prior_assistant_count == 1
+
     try:
-        answer = llm.generate_answer(req.query, context, history=chat_history)
+        answer = llm.generate_answer(req.query, context, history=chat_history, show_default_disclaimer=show_disclaimer)
     except Exception as e:
         err_str = str(e)
         if any(k in err_str for k in ("503", "429", "UNAVAILABLE", "overloaded", "high demand")):
