@@ -24,7 +24,12 @@ class ChatHistory:
     def __init__(self):
         self._available = False
         try:
-            self._client = MongoClient(settings.MONGO_URI, serverSelectionTimeoutMS=3000)
+            self._client = MongoClient(
+                settings.MONGO_URI,
+                serverSelectionTimeoutMS=10000,
+                connectTimeoutMS=10000,
+                retryWrites=True,
+            )
             self._client.admin.command("ping")
             db = self._client[settings.MONGO_DB_NAME]
             self._col = db["chat_history"]
