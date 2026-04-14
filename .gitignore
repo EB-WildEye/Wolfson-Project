@@ -9,9 +9,9 @@ build/
 .env
 .venv/
 
-# Data stores
-lancedb_data/
-
+# Data stores — lancedb_data/ is committed (pre-built vectors for Vercel)
+# lancedb_data/
+DEPLOY.md
 # IDE
 .vscode/
 .idea/
@@ -19,3 +19,5 @@ lancedb_data/
 # OS
 .DS_Store
 Thumbs.db
+logs/gali.log
+.pytest_cache/

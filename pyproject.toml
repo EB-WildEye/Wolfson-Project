@@ -10,8 +10,15 @@ dependencies = [
     "fastapi>=0.115",          # Backend API
     "uvicorn>=0.34",           # ASGI server
     "streamlit>=1.40",         # Chat UI
-    "pypdf>=5.0",              # PDF reader
-    "python-dotenv>=1.0",      # .env loading
+    "pdfplumber>=0.11",         # PDF reader with table detection
+    "pydantic-settings>=2.0",   # Config from .env
+    "markdown>=3.5",            # Markdown → HTML for chat links
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0",
+    "requests>=2.32",
 ]
 
 [build-system]

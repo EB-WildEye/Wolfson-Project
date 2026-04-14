@@ -1,0 +1,53 @@
+"""LanceDB vector store wrapper."""
+
+import lancedb
+from agent.config import settings
+from agent.logger import get_logger
+from agent.llm import GeminiClient
+
+log = get_logger(__name__)
+
+
+class VectorStore:
+    """Manages LanceDB connection, search, and storage."""
+
+    def __init__(self, llm: GeminiClient):
+        self._db = lancedb.connect(str(settings.LANCEDB_PATH))
+        self._llm = llm
+        log.info(f"LanceDB connected | path={settings.LANCEDB_PATH}")
+
+
+    def search_similar(self, query: str, top_k: int = 8) -> list[dict]:
+        """Embed query and return top-k similar chunks."""
+        table = self._db.open_table(settings.LANCEDB_TABLE)
+        results = table.search(self._llm.embed_text(query)).limit(top_k).to_list()
+        log.debug(f"Search returned {len(results)} results | query: {query[:40]}")
+        return results
+
+
+    def store_chunks(self, chunks: list[dict], mode: str = "overwrite"):
+        """Create or append chunks to the documents table."""
+        self._db.create_table(settings.LANCEDB_TABLE, chunks, mode=mode)
+        log.info(f"Stored {len(chunks)} chunks in '{settings.LANCEDB_TABLE}' (mode={mode})")
+
+
+    def drop_table(self):
+        """Drop the documents table."""
+        try:
+            self._db.drop_table(settings.LANCEDB_TABLE)
+            log.warning(f"Dropped table '{settings.LANCEDB_TABLE}'")
+        except Exception:
+            log.info(f"Table '{settings.LANCEDB_TABLE}' does not exist, nothing to drop")
+
+
+    def count_rows(self) -> int:
+        """Return number of rows in the table."""
+        try:
+            return self._db.open_table(settings.LANCEDB_TABLE).count_rows()
+        except Exception:
+            return 0
+
+
+    def check_connection(self):
+        """Lightweight check that LanceDB is reachable and the table exists."""
+        self._db.open_table(settings.LANCEDB_TABLE)
