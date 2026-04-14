@@ -19,3 +19,5 @@ DEPLOY.md
 # OS
 .DS_Store
 Thumbs.db
+logs/gali.log
+.pytest_cache/

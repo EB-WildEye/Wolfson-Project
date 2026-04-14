@@ -189,6 +189,16 @@ async def handle_chat_message(req: ChatRequest):
     if not answer:
         raise HTTPException(502, "LLM returned an empty response")
 
+    # If the model added the default disclaimer without being asked, strip it.
+    # Matches any separator (---) followed by a line containing "אינפורמטיבי בלבד",
+    # regardless of the exact wording the model uses.
+    if not show_disclaimer:
+        answer = re.sub(
+            r"\n*-{3,}\n*[^\n]*אינפורמטיבי בלבד[^\n]*\n?",
+            "",
+            answer,
+        ).strip()
+
     # Atomic save — both turns or neither
     history.save_conversation_turn(req.session_id, user_msg=req.query, assistant_msg=answer)
 
