@@ -1483,3 +1483,75 @@
 2026-03-25 21:05:52 | INFO     | __main__ |   Embedded 200/205
 2026-03-25 21:05:54 | INFO     | agent.vectorstore | Stored 205 chunks in 'documents' (mode=overwrite)
 2026-03-25 21:05:54 | INFO     | __main__ | Done | 205 chunks stored | 0 skipped | 84.4s
+2026-04-14 15:44:00 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-04-14 15:44:00 | INFO     | agent.vectorstore | LanceDB connected | path=/mnt/c/Users/eb300/Desktop/Wolfson/Wolfson-Project/lancedb_data
+2026-04-14 15:44:00 | WARNING  | agent.vectorstore | Dropped table 'documents'
+2026-04-14 15:44:00 | WARNING  | __main__ | Hash cache cleared
+2026-04-14 15:44:00 | INFO     | __main__ | Existing rows: 0
+2026-04-14 15:44:00 | INFO     | __main__ | Processing: D&C_D&E.pdf
+2026-04-14 15:44:03 | INFO     | __main__ |   → 51 chunks from 30207 chars
+2026-04-14 15:44:03 | INFO     | __main__ | Processing: Disclaimers.pdf
+2026-04-14 15:44:03 | INFO     | __main__ |   → 4 chunks from 2386 chars
+2026-04-14 15:44:03 | INFO     | __main__ | Processing: INDUCED.pdf
+2026-04-14 15:44:09 | INFO     | __main__ |   → 88 chunks from 52732 chars
+2026-04-14 15:44:09 | INFO     | __main__ | Processing: Missed_abortio.pdf
+2026-04-14 15:44:13 | INFO     | __main__ |   → 62 chunks from 36782 chars
+2026-04-14 15:44:13 | INFO     | __main__ | Embedding 205 chunks...
+2026-04-14 15:44:27 | INFO     | __main__ |   Embedded 10/205
+2026-04-14 15:44:30 | INFO     | __main__ |   Embedded 20/205
+2026-04-14 15:44:34 | INFO     | __main__ |   Embedded 30/205
+2026-04-14 15:44:37 | INFO     | __main__ |   Embedded 40/205
+2026-04-14 15:44:40 | INFO     | __main__ |   Embedded 50/205
+2026-04-14 15:44:43 | INFO     | __main__ |   Embedded 60/205
+2026-04-14 15:44:47 | INFO     | __main__ |   Embedded 70/205
+2026-04-14 15:44:50 | INFO     | __main__ |   Embedded 80/205
+2026-04-14 15:44:53 | INFO     | __main__ |   Embedded 90/205
+2026-04-14 15:44:56 | INFO     | __main__ |   Embedded 100/205
+2026-04-14 15:45:00 | INFO     | __main__ |   Embedded 110/205
+2026-04-14 15:45:03 | INFO     | __main__ |   Embedded 120/205
+2026-04-14 15:45:06 | INFO     | __main__ |   Embedded 130/205
+2026-04-14 15:45:09 | INFO     | __main__ |   Embedded 140/205
+2026-04-14 15:45:12 | INFO     | __main__ |   Embedded 150/205
+2026-04-14 15:45:15 | INFO     | __main__ |   Embedded 160/205
+2026-04-14 15:45:18 | INFO     | __main__ |   Embedded 170/205
+2026-04-14 15:45:22 | INFO     | __main__ |   Embedded 180/205
+2026-04-14 15:45:25 | INFO     | __main__ |   Embedded 190/205
+2026-04-14 15:45:28 | INFO     | __main__ |   Embedded 200/205
+2026-04-14 15:45:30 | INFO     | agent.vectorstore | Stored 205 chunks in 'documents' (mode=overwrite)
+2026-04-14 15:45:30 | INFO     | __main__ | Done | 205 chunks stored | 0 skipped | 90.2s
+2026-04-14 15:59:17 | INFO     | agent.llm | Gemini ready | LLM=gemini-2.5-pro | Embed=gemini-embedding-001
+2026-04-14 15:59:17 | INFO     | agent.vectorstore | LanceDB connected | path=/mnt/c/Users/eb300/Desktop/Wolfson/Wolfson-Project/lancedb_data
+2026-04-14 15:59:17 | WARNING  | agent.vectorstore | Dropped table 'documents'
+2026-04-14 15:59:17 | WARNING  | __main__ | Hash cache cleared
+2026-04-14 15:59:17 | INFO     | __main__ | Existing rows: 0
+2026-04-14 15:59:17 | INFO     | __main__ | Processing: D&C_D&E.pdf
+2026-04-14 15:59:21 | INFO     | __main__ |   → 51 chunks from 30207 chars
+2026-04-14 15:59:21 | INFO     | __main__ | Processing: Disclaimers.pdf
+2026-04-14 15:59:21 | INFO     | __main__ |   → 4 chunks from 2386 chars
+2026-04-14 15:59:21 | INFO     | __main__ | Processing: INDUCED.pdf
+2026-04-14 15:59:27 | INFO     | __main__ |   → 88 chunks from 52732 chars
+2026-04-14 15:59:27 | INFO     | __main__ | Processing: Missed_abortio.pdf
+2026-04-14 15:59:31 | INFO     | __main__ |   → 62 chunks from 36782 chars
+2026-04-14 15:59:31 | INFO     | __main__ | Embedding 205 chunks...
+2026-04-14 15:59:34 | INFO     | __main__ |   Embedded 10/205
+2026-04-14 15:59:38 | INFO     | __main__ |   Embedded 20/205
+2026-04-14 15:59:41 | INFO     | __main__ |   Embedded 30/205
+2026-04-14 15:59:44 | INFO     | __main__ |   Embedded 40/205
+2026-04-14 15:59:47 | INFO     | __main__ |   Embedded 50/205
+2026-04-14 15:59:50 | INFO     | __main__ |   Embedded 60/205
+2026-04-14 15:59:53 | INFO     | __main__ |   Embedded 70/205
+2026-04-14 15:59:57 | INFO     | __main__ |   Embedded 80/205
+2026-04-14 16:00:00 | INFO     | __main__ |   Embedded 90/205
+2026-04-14 16:00:03 | INFO     | __main__ |   Embedded 100/205
+2026-04-14 16:00:06 | INFO     | __main__ |   Embedded 110/205
+2026-04-14 16:00:10 | INFO     | __main__ |   Embedded 120/205
+2026-04-14 16:00:13 | INFO     | __main__ |   Embedded 130/205
+2026-04-14 16:00:16 | INFO     | __main__ |   Embedded 140/205
+2026-04-14 16:00:19 | INFO     | __main__ |   Embedded 150/205
+2026-04-14 16:00:22 | INFO     | __main__ |   Embedded 160/205
+2026-04-14 16:00:26 | INFO     | __main__ |   Embedded 170/205
+2026-04-14 16:00:29 | INFO     | __main__ |   Embedded 180/205
+2026-04-14 16:00:32 | INFO     | __main__ |   Embedded 190/205
+2026-04-14 16:00:35 | INFO     | __main__ |   Embedded 200/205
+2026-04-14 16:00:37 | INFO     | agent.vectorstore | Stored 205 chunks in 'documents' (mode=overwrite)
+2026-04-14 16:00:37 | INFO     | __main__ | Done | 205 chunks stored | 0 skipped | 79.5s

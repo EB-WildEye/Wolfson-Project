@@ -83,6 +83,22 @@ class GeminiClient:
                     delay = BASE_DELAY * (2 ** (attempt - 1))
                     log.warning(f"Gemini transient error (attempt {attempt}/{MAX_RETRIES}), retrying in {delay}s: {err_str[:120]}")
                     time.sleep(delay)
+                elif is_transient and settings.FALLBACK_MODEL != settings.GEMINI_MODEL:
+                    # Primary model exhausted retries — fall back
+                    log.warning(f"Primary model {settings.GEMINI_MODEL} unavailable, falling back to {settings.FALLBACK_MODEL}")
+                    return self._fallback_generate(message, gemini_history)
                 else:
                     log.error(f"Gemini failed after {attempt} attempt(s): {err_str[:200]}")
                     raise
+
+
+    def _fallback_generate(self, message: str, gemini_history: list) -> str:
+        """One-shot attempt with the fallback model."""
+        chat = self._client.chats.create(
+            model=settings.FALLBACK_MODEL,
+            config=self._config,
+            history=gemini_history,
+        )
+        response = chat.send_message(message)
+        log.info(f"Fallback ({settings.FALLBACK_MODEL}) generated {len(response.text)} chars")
+        return response.text

@@ -18,7 +18,8 @@ class Settings(BaseSettings):
     ENV: Literal["dev", "prod"] = "dev"
 
     GEMINI_API_KEY: SecretStr
-    GEMINI_MODEL: str = "gemini-2.5-pro"
+    GEMINI_MODEL: str = "gemini-3.1-pro-preview"
+    FALLBACK_MODEL: str = "gemini-2.5-pro"
     EMBED_MODEL: str = "gemini-embedding-001"
 
     MONGO_URI: str = "mongodb://localhost:27017"
